@@ -1,0 +1,25 @@
+[18-Feb-2020 06:17:49 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[18-Feb-2020 06:23:28 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[18-Feb-2020 06:24:29 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[18-Feb-2020 06:25:27 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[18-Feb-2020 06:30:08 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[18-Feb-2020 06:36:11 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[18-Feb-2020 06:36:29 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[18-Feb-2020 10:44:40 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[21-Feb-2020 06:48:44 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[21-Feb-2020 06:48:53 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[21-Feb-2020 06:49:06 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[21-Feb-2020 06:53:46 UTC] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_fetch.php on line 26
+[21-Feb-2020 12:24:52 Asia/Kolkata] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_ind_fetch.php on line 21
+[21-Feb-2020 12:24:52 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_ind_fetch.php on line 27
+[21-Feb-2020 12:24:52 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_ind_fetch.php on line 27
+[21-Feb-2020 12:24:52 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_ind_fetch.php on line 27
+[21-Feb-2020 12:24:52 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_ind_fetch.php on line 27
+[21-Feb-2020 12:24:52 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_ind_fetch.php on line 27
+[21-Feb-2020 12:24:52 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_ind_fetch.php on line 27
+[21-Feb-2020 12:24:52 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/user_devices_ind_fetch.php on line 27
+[20-Nov-2020 11:34:54 Asia/Kolkata] PHP Notice:  Undefined index: username in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/loginfetch.php on line 18
+[20-Nov-2020 11:34:54 Asia/Kolkata] PHP Warning:  mysqli_fetch_assoc() expects parameter 1 to be mysqli_result, bool given in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/loginfetch.php on line 21
+[20-Nov-2020 11:34:54 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/loginfetch.php on line 27
+[20-Nov-2020 11:34:54 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/loginfetch.php on line 27
+[20-Nov-2020 11:34:54 Asia/Kolkata] PHP Notice:  Undefined offset: 0 in /home/pc718jo5qlmo/public_html/aawi_dashboard/api/loginfetch.php on line 27

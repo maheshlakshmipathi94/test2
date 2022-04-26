@@ -1,0 +1,2408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+   <title>Pneoterik - Smart air purifier</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/spinner.css">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/mqtt.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<style>
+    
+     #map {
+         height: 100%;
+         position: relative;
+         }
+    
+    #map_modal {
+         height: 100%;
+         position: relative;
+         }
+    
+    .switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(25px);
+  -ms-transform: translateX(25px);
+  transform: translateX(25px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+    
+    
+    
+
+    
+    </style>
+</head>
+
+<body onload="initialize()">
+<div style="position: absolute;width: 100%;height: 100%;">
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+       <div class="nav-header" style="height: 10%">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <b class="logo-abbr"><img src="images/logo.png" alt=""> </b>
+                    <span class="logo-compact"><img src="./images/logo-compact.png" alt=""></span>
+                    <span class="brand-title">
+                        <img src="images/login-logo.png" alt="" height="85px" width="160px">
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+ 
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+ 
+            <div class="container-fluid mt-3">
+                <center>
+                    
+                      <div class="lds-ellipsis" id="loading0"><div></div><div></div><div></div><div></div></div>
+                    </center>
+                
+                <div class="row">
+                 
+                    
+                    
+                     <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-3">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Air-purifier Details</h3>
+                               
+                                
+                             <div class="d-inline-block">
+                                    <p class="text-white mb-0" >Device id:<span id="deviceid" style="font-weight: 600">--</span></p>
+                                    <p class="text-white mb-0" >Sensor Id:<span id="sensorid" style="font-weight: 600">--</span></p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-tachometer"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-2">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">other details</h3>
+                                 <div class="d-inline-block">
+                                    <p class="text-white mb-0" >Status: <span id="status">Online</span></p>
+                                    <p class="text-white mb-0" >Location: <span id="location">--</span></p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-line-chart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-1">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total Energy consumption</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white" ><span id="maintotenergy">00</span> Kwh</h2>
+                                    <p class="text-white mb-0" ><span id="maintotcost">00</span> INR</p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-bar-chart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+              
+                    
+                   
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-4">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Avg sensor reading</h3>
+                                <div class="d-inline-block">
+                                    
+                                    <p class="text-white mb-0">Co2 = <span id="avg_data1">00</span></p>
+                                     <p class="text-white mb-0">PM 2.5 = <span id="avg_data2">00</span></p>
+                                     <p class="text-white mb-0">Temp = <span id="avg_data3">00</span></p>
+                                     <p class="text-white mb-0">Humidity = <span id="avg_data4">00</span></p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-line-chart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                          <div class="row">
+                    <div style="width: 100%;font-size: 20px;margin-bottom: 2%;margin-left: 2%">Air purifier Controls (Live data)
+                    
+                  
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="active-member">
+                                    <div class="table-responsive">
+                                        <table class="table table-xs mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>S no.</th>
+                                                    <th>Device ID</th>
+                                                    <th>Sensor ID</th>
+                                                    <th>CO2</th>
+                                                    <th>PM2.5</th>
+                                                    <th>Temperature</th>
+                                                    <th>Humidity</th>
+                                                    <th>Smoke level</th>
+                                                    <th>control 1</th>
+                                                    <th>control 2</th>
+                                                    <th>control 3</th>
+                                                    <th>control 4</th>
+                                                    <th></th>
+                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                 <td id="sno1">1</td>
+                                                 <td id="deviceid1">****</td>
+                                                 <td id="sensorid1">****
+                                                 <td id="data1_value1">****</td>    
+                                                 <td id="data1_value2">****</td>  
+                                                 <td id="data1_value3">****</td>  
+                                                 <td id="data1_value4">****</td>  
+                                                 <td id="data1_value5">****</td>     
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch11" onclick="switchcontrol('1','1')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch12" onclick="switchcontrol('1','2')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch13" onclick="switchcontrol('1','3')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch14" onclick="switchcontrol('1','4')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>      
+                                               
+                                                        
+                                                 <td>
+                                                   <button type="button" class="btn mb-1 btn-rounded btn-primary" onclick="adjust('1')" data-toggle="modal" data-target="#modalbrightness">Adjust</button>
+                                                    
+                                                 </td>
+                                                    
+                                                    <td>
+                                                      <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="auto_set('1')" data-toggle="modal" data-target="#modaledit">
+                                   <i class="fa fa-edit gradient-4-text"></i>
+                                    </button>
+                                                    
+                                                    </td>
+                                               
+                                                </tr>
+                                                
+                                                
+                                                
+                                                
+                                               
+                                                
+                                                
+                                               
+                                                
+                                                
+                                                
+                                                
+                              
+                                            </tbody>
+                                            
+                                            
+                                        </table>
+                                        
+                                         <div class="chart-wrapper">
+                                        <center>
+                                        <div class="lds-roller1" id="loading_chart" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                         <canvas id="livechart" height="100%"></canvas>
+                                        
+                                    </div>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+
+                             <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    
+                                    <div class="card-body pb-0 d-flex justify-content-between">
+                                        <div>
+                                            
+                                            <h4 class="mb-1">Consolidated data</h4>
+                                                                                 
+                                        </div>
+                                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 5px; border: 1px solid #ccc; width: 30%">
+                                        <i class="fa fa-calendar"></i>&nbsp;
+                                        <span></span> <i class="fa fa-caret-down"></i>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                     <h4 class="mb-1">Co2 sensor</h4>
+                                     <div class="chart-wrapper">
+                                        <center>
+                                        <div class="lds-roller1" id="loading2" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                         <canvas id="sensorchart1" ></canvas>
+                                        
+                                    </div>
+                                    </div>
+                                    
+                                    <div class="col-lg-6">
+                                     <h4 class="mb-1">PM 2.5 sensor</h4>
+                                     <div class="chart-wrapper">
+                                        <center>
+                                        <div class="lds-roller1" id="loading3" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                         <canvas id="sensorchart2" ></canvas>
+                                        
+                                    </div>
+                                    </div>
+                                        
+                                <div class="col-lg-6">
+                                     <h4 class="mb-1">Temperature sensor</h4>
+                                     <div class="chart-wrapper">
+                                        <center>
+                                        <div class="lds-roller1" id="loading4" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                         <canvas id="sensorchart3" ></canvas>
+                                        
+                                    </div>
+                                    </div>
+                                        
+                                        <div class="col-lg-6">
+                                     <h4 class="mb-1">Humidity sensor</h4>
+                                     <div class="chart-wrapper">
+                                        <center>
+                                        <div class="lds-roller1" id="loading5" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                         <canvas id="sensorchart4" ></canvas>
+                                        
+                                    </div>
+                                    </div>
+                                        
+                                    </div>
+                                    <div class="chart-wrapper">
+                                        <center>
+                                        <div class="lds-roller1" id="loading1" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                         <canvas id="speedChart" ></canvas>
+                                        
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="w-100 mr-2">
+                                                <h6>Energy consumption</h6>
+                                                <h4 id="totenergy">00 KWh</h4>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-danger" style="width: 40%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 w-100">
+                                                <h6>Cost incured</h6>
+                                                <h4 id="totcost">00 INR</h4>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 w-100">
+                                                <h6>Run time</h6>
+                                                <h4 id="totruntime">00h 00m 00s</h4>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-warning" style="width: 80%"></div>
+                                                </div>
+                                            </div>
+                                            
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+    
+                
+                
+
+      
+
+
+
+                
+
+
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+                                  <div class="modal fade" id="modalbrightness">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    
+                                                    <h5 class="modal-title">Speed control</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    <h5>Set speed</h5>
+                                                    <hr>
+                                                    <center>
+                                                        <br>
+                                                        
+                                                           <input type="range" min="1" max="100" value="100" style="width: 90%" id="speed_slider">
+                                                    <br>
+                                                    <br>
+                                                    
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-info" style="width: 25%" onclick="setspeed()">Set</button>
+                                                    </center>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                    <div class="modal fade" id="modaledit">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Settings</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                    
+                                                    
+                                                </div>
+                                                <div class="modal-body">
+                                                <button style="display: inline;width: 32%;padding: 5px;background:grey;border: none;border-bottom: 1px solid grey" onclick="settings('1')" id="settings_button1">Auto mode</button>
+                                                <button style="display: inline;width: 32%;padding: 5px;background: none;border: none;border-bottom: 1px solid grey" onclick="settings('2')" id="settings_button2">Filter change</button>
+                                                <button style="display: inline;width: 32%;padding: 5px;background: none;border: none;border-bottom: 1px solid grey" onclick="settings('3')" id="settings_button3">Smoke sensor</button>    
+                                                
+                                        <div style="display: block" id="settings_div1">
+                                                    <center>
+                                        <div class="lds-roller1" id="loading_settings1" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                                    
+
+                                                    <h5 style="float: left">Auto mode</h5>
+                                                    
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox" id="automode" onclick="automode()">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                                                    
+                                        </div>
+                                                    
+                                                    
+                                                    
+                                        <div style="display: none" id="settings_div2">
+                                                    <center>
+                                        <div class="lds-roller1" id="loading_settings2" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                                    
+                                                       <h5 style="padding-top: 5px">Set Run-time for filter change
+                                                        <a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="Once the air purifier run-time reaches the set thershold,alert will be provided for change of filter" style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                        </h5>
+                                                     <input type="number" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter runtime in hours" id="settings2_input1">      
+                                                    <br>
+                                            <br>
+                                            <center>
+                                            <button type="button" class="btn mb-1 btn-rounded btn-outline-info" style="width: 25%" onclick="settings2_set1()">Set</button>
+                                            </center>
+                                                        
+                                                       
+                                                    <hr>
+                                                         <h5 style="padding-top: 5px">Filter change Auto cut-off settings<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="once the upper runtime limit is reached the filter needs to be changed and operating the purifier without the change of filter will damage the device " style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                        </h5>
+                                                        
+                                                        <p>Auto-cutoff<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="By turning on this feature the device will automaticaly switch off when the filter aut-cutoff timing is reached" style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox" id="settings2_button" onclick="settings2_button()">
+                                                     <span class="slider round"></span>
+                                                    </label></p>
+                                                        
+                                                     <input type="number" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter filter cut-off run time" id="settings2_input2"> 
+                                            
+                                            <br>
+                                            <br>
+                                            <center>
+                                            <button type="button" class="btn mb-1 btn-rounded btn-outline-info" style="width: 25%" onclick="settings2_set2()">Set</button>
+                                            </center>
+                                                        
+                                                    <div style="color: red;display: none" id="settings2_error">Enter valid details</div>
+                                                        
+                                                        
+                                     </div>
+                                                    
+                                                    
+                                        <div style="display:none" id="settings_div3">
+                                                    <center>
+                                        <div class="lds-roller1" id="loading_settings3" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                                    
+                                               
+                                                         <h5 style="padding-top: 5px">Smoke sensor Auto cut-off settings<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="Once smoke is detected the device will trigger alerts" style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                        </h5>
+                                                        
+                                                        <p>Smoke Auto-cutoff<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="By turning on this feature the device will automaticaly switch off when the system detects any presence of smoke" style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox" id="settings3_button" onclick="settings3_button()">
+                                                     <span class="slider round"></span>
+                                                    </label></p>
+                                                        
+                                                     <input type="number" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter smoke cut-off value" id="settings3_input"> 
+                                                        
+                                                      <br>
+                                            <br>
+                                            <center>
+                                            <button type="button" class="btn mb-1 btn-rounded btn-outline-info" style="width: 25%" onclick="settings3_set()">Set</button>
+                                            </center>
+                                                        
+                                               <div style="color: red;display: none" id="settings3_error">Enter valid details</div>          
+                                                    
+                                                    
+                                                    
+                                                
+                                                    
+                                    </div>
+                                                    
+                                                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                              
+        
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright &copy; Designed & Developed by <a href="https://thewhizly.com">Aioty labs</a> 2021</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="plugins/common/common.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/gleek.js"></script>
+    <script src="js/styleSwitcher.js"></script>
+
+    <!-- Chartjs -->
+    <script src="./plugins/chart.js/Chart.bundle.min.js"></script>
+    <!-- Circle progress -->
+    <script src="./plugins/circle-progress/circle-progress.min.js"></script>
+    <!-- Datamap -->
+    <script src="./plugins/d3v3/index.js"></script>
+    <script src="./plugins/topojson/topojson.min.js"></script>
+    <script src="./plugins/datamaps/datamaps.world.min.js"></script>
+    <!-- Morrisjs -->
+    <script src="./plugins/raphael/raphael.min.js"></script>
+    <script src="./plugins/morris/morris.min.js"></script>
+    <!-- Pignose Calender -->
+    <script src="./plugins/moment/moment.min.js"></script>
+    <script src="./plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+    <!-- ChartistJS -->
+    <script src="./plugins/chartist/js/chartist.min.js"></script>
+    <script src="./plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
+
+
+
+    <script src="./js/dashboard/dashboard-1.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    
+        <script>
+            
+            var device = localStorage.getItem("deviceid");
+
+        var hub_id="";
+        var ack_id;
+        var graphdata0 = [];// temp time graph data
+        var graphdata1 = []; // day graph data
+        var graphdata2 = [];// day graph data energy
+        var graphdata3 = [];// day graph data cost
+        var graphdata4 = [];// day graph data time
+        var smallgraph0 = [];
+        var smallgraph1 = [];
+        var smallgraph2 = []; // sensor data1
+        var smallgraph3 = []; // sensor data2
+        var smallgraph4 = []; // sensor data3
+        var smallgraph5 = []; // sensor data4
+        
+        
+        var avgsmallgraph1 = []; // avg sensor data1
+        var avgsmallgraph2 = []; // avg sensor data2
+        var avgsmallgraph3 = []; // avg sensor data3
+        var avgsmallgraph4 = []; // avg sensor data4
+        
+        
+        var final_smallgraph1 = []; // sensor data1 
+        var final_smallgraph2 = []; // sensor data2
+        var final_smallgraph3 = []; // sensor data3
+        var final_smallgraph4 = []; // sensor data4
+        
+        var livegraph1 =[0,0,0,0,0];
+        var livegraph2 =[0,0,0,0,0];
+        var livegraph3 =[0,0,0,0,0];
+        var livegraph4 =[0,0,0,0,0];
+        
+        var livetimegraph =[0,0,0,0,0];
+        
+        var livechart;
+    
+     client = new Paho.MQTT.Client("165.22.219.33",9001, "web_" + parseInt(Math.random() * 100, 10));
+  // set callback handlers
+  client.onConnectionLost = onConnectionLost;
+  client.onMessageArrived = onMessageArrived;
+  var options = {
+     // alert("initialstarted");
+    useSSL: false,
+    userName: "whizly",
+    password: "whizly2021!",
+    onSuccess:onConnect,
+    onFailure:doFail
+  }
+
+  // connect the client
+  client.connect(options);
+
+  // called when the client connects
+  function onConnect() {
+       
+     //alert("onconnect");
+           var ack_id = Math.floor(Math.random()*9000000) + 1000000;
+    var tempmes = "Whizly-air purifier dashboard refreshed";
+ //   client.subscribe(livingd1);
+    message = new Paho.MQTT.Message(tempmes);
+    message.destinationName = "air-purifier";
+    client.send(message);
+      
+      client.subscribe(localStorage.getItem("deviceid"));
+      client.subscribe(localStorage.getItem("sensorid"));
+      
+       var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid1").innerHTML;
+                client.send(message);
+      
+      setInterval(getdata,2000);
+      
+      
+      //alert(document.getElementById("deviceid1").innerHTML);
+        
+        
+      
+  }
+    
+  
+  function doFail(e){
+    console.log(e);
+      ///alert(JSON.stringify(e));
+     
+  }
+
+  // called when the client loses its connection
+  function onConnectionLost(responseObject) {
+      //alert(JSON.stringify(responseObject));
+      
+      swal({
+  title: "Connection timeout",
+  text: "Reload to establish connection with your devices",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+      
+  location.reload();
+      
+  } else {
+   
+  }
+});
+
+  }
+        
+          function onMessageArrived(message)
+    {
+        
+      var rec = message.payloadString;
+  //    var active =0;
+    // alert(rec)
+      var splits = rec.split(",");
+      
+      //
+       if(rec.length >3 && splits[0] == "fb"){
+           
+           if(splits[2] == document.getElementById("deviceid1").innerHTML)
+               {
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("switch11").checked = true;
+                       }
+                   
+                   if(splits[4] == "1")
+                       {
+                           document.getElementById("switch12").checked = true;
+                       }
+                   
+                   if(splits[5] == "1")
+                       {
+                           document.getElementById("switch13").checked = true;
+                       }
+                   
+                   if(splits[6] == "1")
+                       {
+                           document.getElementById("switch14").checked = true;
+                       }
+                   
+                   
+               }
+              
+       }
+        
+        if(rec.length >3 && splits[0] == "sensor"){
+           
+       if(splits[2] == document.getElementById("sensorid1").innerHTML)
+               {
+           
+       
+                 
+                           document.getElementById("data1_value1").innerHTML = splits[3] + "ppm";
+                          document.getElementById("data1_value2").innerHTML = splits[4]+ " ug/m3";
+                         document.getElementById("data1_value3").innerHTML = splits[5]+ " *C";
+                         document.getElementById("data1_value4").innerHTML = splits[6]+ " Rh";
+                   
+                   
+
+                    var today = new Date();
+                    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                   //alert(time);
+                   livetimegraph.splice(0,1);
+                   livetimegraph.push(time);
+                   livegraph1.splice(0,1);
+                   livegraph2.splice(0,1);
+                   livegraph3.splice(0,1);
+                   livegraph4.splice(0,1);
+                   livegraph1.push(splits[3]);
+                   livegraph2.push(splits[2]);
+                   livegraph3.push(splits[3]);
+                   livegraph4.push(splits[6]);
+                   livechart.update();
+                   
+                   document.getElementById("loading_chart").style.display = "none";
+                   
+                   
+                   
+               }
+            
+              
+       }
+        
+        
+        if(rec.length >3 && splits[0] == "smoke"){
+            
+                 
+           if(splits[2] == document.getElementById("deviceid1").innerHTML)
+               {
+                   
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("data1_value5").innerHTML = "Normal" + "("+splits[4]+")";
+                       }
+                   else{
+                       
+                       document.getElementById("data1_value5").innerHTML = "Bad" + "("+splits[4]+")";
+                       
+                   }
+                   
+                   
+               }
+        }
+        
+        if(rec.length >3 && splits[0] == "auto_reply"){
+            
+            if(splits[2] == autoselect)
+               {
+                 if(splits[3] == "1")
+                     {
+                         document.getElementById("automode").checked = true;
+                     }
+                   
+                   document.getElementById("loading_settings1").style.display = "none";
+               }
+            
+            
+        }
+        
+        if(rec.length >3 && splits[0] == "filter_reply"){
+            
+            if(splits[2] == deviceselect)
+               {
+                   document.getElementById("settings2_input1").value = splits[3];
+                   
+                 if(splits[4] == "1")
+                     {
+                         document.getElementById("settings2_button").checked = true;
+                     }
+                   document.getElementById("settings2_input2").value = splits[5];
+                   
+                   document.getElementById("loading_settings2").style.display = "none";
+               }
+            
+            
+        }
+        
+        if(rec.length >3 && splits[0] == "smoke_reply"){
+            
+            if(splits[2] == deviceselect)
+               {
+                   //document.getElementById("settings2_input1").value = splits[3];
+                   
+                 if(splits[3] == "1")
+                     {
+                         document.getElementById("settings3_button").checked = true;
+                     }
+                   document.getElementById("settings3_input").value = splits[4];
+                   
+                   document.getElementById("loading_settings3").style.display = "none";
+               }
+            
+            
+        }
+    }
+            
+            
+            function getdata()
+            {
+                
+                if(document.getElementById("deviceid1").innerHTML != "****")
+            {
+            
+                //client.subscribe(document.getElementById("deviceid1").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get_smoke,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid1").innerHTML;
+                client.send(message);
+                
+            }
+                
+                 if(document.getElementById("sensorid1").innerHTML != "****")
+            {
+            
+                //client.subscribe(document.getElementById("deviceid1").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid1").innerHTML;
+                client.send(message);
+                
+            }
+                
+                
+            }
+    </script>
+    
+    <script>
+        var f =0;
+   
+        
+        
+        
+        function initialize()
+        
+        {
+            //localStorage.setItem("email","maheshlakshmipathi@gmail.com");   
+            document.getElementById("deviceid").innerHTML = localStorage.getItem("deviceid");
+            document.getElementById("sensorid").innerHTML = localStorage.getItem("sensorid");
+            
+             document.getElementById("deviceid1").innerHTML = localStorage.getItem("deviceid");
+            document.getElementById("sensorid1").innerHTML = localStorage.getItem("sensorid");
+            
+            
+           if(localStorage.getItem("login") != "done")
+          {
+              window.location.href = "login.html";
+          }
+          
+             setTimeout(tableload,4000);
+            
+        }
+        
+  
+   function tableload()
+        {
+            var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/fetch_energy_ind.php?id="+localStorage.getItem("deviceid"),false);
+    xmlhttp.send();
+       
+    var data = xmlhttp.responseText;
+            
+           var temp_energy_data =0;
+     var table1 = JSON.parse(data);
+               for (g = 0; g < table1.length; g+=1) 
+                {    
+                
+                    
+                    temp_energy_data = temp_energy_data+parseFloat(table1[g].energy);
+                    //alert("data");
+                    
+                }
+            document.getElementById("maintotenergy").innerHTML = (temp_energy_data).toFixed(2);
+            document.getElementById("maintotcost").innerHTML = (temp_energy_data*6.01).toFixed(2);
+           // alert(data);
+            
+            var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/fetch_sensor_ind.php?id="+localStorage.getItem("sensorid"),false);
+    xmlhttp.send();
+       
+    var data = xmlhttp.responseText;
+            //alert(data);
+            
+        
+           var avg_data1 =0;
+            var avg_data2 =0;
+            var avg_data3 =0;
+            var avg_data4 =0;
+     var table1 = JSON.parse(data);
+               for (g = 0; g < table1.length; g+=1) 
+                {    
+                
+                    //alert(data);
+                    avg_data1 = avg_data1+parseFloat(table1[g].data1);
+                    avg_data2 = avg_data1+parseFloat(table1[g].data2);
+                    avg_data3 = avg_data1+parseFloat(table1[g].data3);
+                    avg_data4 = avg_data1+parseFloat(table1[g].data4);
+                    
+                }
+            document.getElementById("avg_data1").innerHTML = parseFloat(avg_data1/table1.length).toFixed(2)+" ppm";
+            document.getElementById("avg_data2").innerHTML = parseFloat(avg_data2/table1.length).toFixed(2)+" ug/m3";
+            document.getElementById("avg_data3").innerHTML = parseFloat(avg_data3/table1.length).toFixed(2)+" *C";
+            document.getElementById("avg_data4").innerHTML = parseFloat(avg_data4/table1.length).toFixed(2)+" Rh";
+            
+        }
+        
+    
+        
+        function logout()
+        {
+            localStorage.removeItem("login");
+            window.location.href="login.html";
+        }
+        
+        //localStorage.setItem("sensorid","1234")
+    // alert(localStorage.getItem("deviceid"));
+      // alert(localStorage.getItem("sensorid"));
+        
+        
+        
+        
+        
+        
+        
+$(function() {
+
+    var start = moment().subtract(30, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('YYYY/MM/DD') + ' -- ' + end.format('YYYY/MM/DD'));
+        datechange(start.format('YYYY/MM/DD'),end.format('YYYY/MM/DD'));
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    cb(start, end);
+    
+    
+    
+
+});
+        
+        function datechange(data1,data2)
+        {
+            //alert(data1)
+            graphdata1 = [];
+            graphdata2 = [];
+            graphdata3 = [];
+            var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/fetch_energy_ind_date.php?id="+device+"&from="+data1+"&to="+data2,false);
+    xmlhttp.send();
+           // alert(data1);
+
+         //   alert("http://localhost/meshling_streetlight/api/fetch_devices_ind_date.php?id="+device+"&from="+data1+"&to="+data2);
+    var data = xmlhttp.responseText;
+           
+     var table1 = JSON.parse(data);
+     //   alert(data);
+ 
+
+    var totruntime = 0;
+    var totenergy = 0;
+            
+            var splitsdata1 = data1.split("/");
+             var splitsdata2 = data2.split("/");
+        
+                //alert((parseInt(splitsdata2[1])-parseInt(splitsdata1[1])));
+            
+           // alert(data);
+             
+                            
+                           if(data1 == data2)
+                        {
+                            //alert("equal");
+                            for(y = 0; y <=24 ; y+=1)
+                                {
+                                    
+                                    
+                                   if(y <10 )
+                                       {
+                                           var j = "0"+y;
+                                           graphdata0.push(j);
+                                           
+                                           var b = j + ":00";
+                                           graphdata1.push(b);
+                                           
+                                       }
+                                    else{
+                                  //  alert(y);
+                                    var b = y + ":00";
+                                 graphdata0.push(String(y));
+                                 graphdata1.push(b);        
+                                    
+                                    }
+                                    
+                                    graphdata2.push("0");
+                                    graphdata3.push("0");
+                                    graphdata4.push("0");
+                                    
+                                }
+                           
+                           //   alert(graphdata0); 
+                            //alert(graphdata1); 
+                        }
+            
+                for (h = 0; h < table1.length; h +=1) 
+                {    
+                
+                    //alert(data);
+                    var tempdata = table1[h].dates;
+                    var tempsplitsdates = tempdata.split(" ");
+                   // var tempsplitsdates1 = tempsplitsdates[1].split(":")[0];
+                   // alert(data1);
+                    //alert(data2);
+                    var tempcost = parseFloat((table1[h].energy)*6.09).toFixed(2);
+                     totruntime = totruntime + parseInt(table1[h].runtime);
+                    totenergy = totenergy + parseInt(table1[h].energy);
+                    
+                    if(data1 == data2)
+                        {
+                            //alert("equal");
+                            //alert(graphdata0);
+                            //alert(tempsplitsdates1);
+                           //alert(graphdata0.indexOf("11"));
+                            //alert(graphdata2[graphdata0.indexOf(tempsplitsdates1)]);
+                            
+                             graphdata2[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(graphdata2[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])])+parseFloat(table1[h].energy)).toFixed(2);
+                            
+                             graphdata3[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(graphdata3[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])])+parseFloat(tempcost)).toFixed(2);
+                            
+                           
+                            
+                          
+                        }
+                    
+                    else
+                    {
+                                            
+                    
+                    if((parseInt(splitsdata2[1])-parseInt(splitsdata1[1])) < 3)
+                    {
+                     var dates = table1[h].date;
+                    var splits = dates.split("-");
+                    //alert(splits[2]);
+                  //  alert(splits[1]);
+                   // alert(graphdata1.indexOf(table1[h].date));
+                    
+                    if(graphdata1.indexOf(table1[h].date) == -1)
+                        
+                        {
+                           // var tempsplits = splits[2]+"/"+splits[1];
+                            graphdata1.push(table1[h].date);
+                            graphdata2.push(table1[h].energy);
+                           // alert(table1[h].energy);
+                            //alert(tempcost);
+                            graphdata3.push(tempcost);
+                        }
+                    
+                    else
+                        {
+                            
+                            
+                            graphdata2[graphdata1.indexOf(table1[h].date)] = parseFloat(parseFloat(graphdata2[graphdata1.indexOf(table1[h].date)])+parseFloat(table1[h].energy)).toFixed(2);
+                           // alert(tempcost);
+                            
+                            graphdata3[graphdata1.indexOf(table1[h].date)] = parseFloat(parseFloat(graphdata3[graphdata1.indexOf(table1[h].date)])+parseFloat(tempcost)).toFixed(2);
+                            //alert(graphdata3);
+                            //alert("2ndloop");
+                        }
+                    
+                    }
+                    
+                    else{
+                        
+                        
+                        var dates = table1[h].date;
+                    var splits = dates.split("-");
+                    //alert(splits[2]);
+                  //  alert(splits[1]);
+                   // alert(graphdata1.indexOf(table1[h].date));
+                        var tempsplits;
+                        if(splits[1] == "01")
+                            {
+                               tempsplits = "Jan"; 
+                            }
+                       else if(splits[1] == "02")
+                            {
+                               tempsplits = "Feb"; 
+                            }
+                        
+                        else if(splits[1] == "03")
+                            {
+                               tempsplits = "Mar"; 
+                            }
+                        
+                        else if(splits[1] == "04")
+                            {
+                               tempsplits = "Apr"; 
+                            }
+                        
+                        else if(splits[1] == "05")
+                            {
+                               tempsplits = "May"; 
+                            }
+                        else if(splits[1] == "06")
+                            {
+                               tempsplits = "Jun"; 
+                            }
+                        else if(splits[1] == "07")
+                            {
+                               tempsplits = "Jul"; 
+                            }
+                        
+                        else if(splits[1] == "08")
+                            {
+                               tempsplits = "Aug"; 
+                            }
+                        
+                        else if(splits[1] == "09")
+                            {
+                               tempsplits = "Sep"; 
+                            }
+                        
+                        else if(splits[1] == "10")
+                            {
+                               tempsplits = "Oct"; 
+                            }
+                        
+                        else if(splits[1] == "11")
+                            {
+                               tempsplits = "Nov"; 
+                            }
+                        else if(splits[1] == "12")
+                            {
+                               tempsplits = "Dec"; 
+                            }
+                        tempsplits = tempsplits + "-" +splits[0];
+                    
+                    if(graphdata1.indexOf(tempsplits) == -1)
+                        
+                        {
+                           // var tempsplits = splits[2]+"/"+splits[1];
+                            graphdata1.push(tempsplits);
+                            graphdata2.push(table1[h].energy);
+                             graphdata3.push(tempcost);
+                        }
+                    
+                    else
+                        {
+                            
+                            graphdata2[graphdata1.indexOf(tempsplits)] = parseFloat(parseFloat(graphdata2[graphdata1.indexOf(tempsplits)])+parseFloat(table1[h].energy)).toFixed(2);
+                                graphdata2[graphdata1.indexOf(tempsplits)] = parseFloat(parseFloat(graphdata2[graphdata1.indexOf(tempsplits)])+parseFloat(tempcost)).toFixed(2);
+                        }
+                        
+                        
+                    }
+                    
+                    
+                }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+                                                                                        
+                                                                                        
+                                                                                        
+//alert(graphdata1);
+           // alert(graphdata2);
+            //alert(graphdata3);
+            
+            
+                       var speedCanvas = document.getElementById("speedChart");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: graphdata1,
+  datasets: [{
+    yAxisID: 'A',
+    label: "Energy (KWh)",
+    data: graphdata2,
+      borderColor: 'rgb(127,96,250)',
+      backgroundColor: 'rgb(127,96,250,0.1)',
+  }
+            ,
+             
+             {
+    yAxisID: 'B',
+    label: "Cost (INR)",
+    data: graphdata3,
+      borderColor: 'rgb(252,92,137)',
+      backgroundColor: 'rgb(252,92,137,0.1)',
+  }
+            
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+      }, {
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+      
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+                            
+         
+                        
+               var temptotruntime = secondsToHms(totruntime);
+           // alert(temptotruntime);
+                document.getElementById("totruntime").innerHTML = temptotruntime;
+             //alert(totruntime)
+         //   alert(totenergy);
+                            document.getElementById("totenergy").innerHTML = totenergy+"KWh";
+                            document.getElementById("totcost").innerHTML = parseFloat(totenergy*6.09).toFixed(2)+"INR";
+            document.getElementById("loading1").style.display = "none";
+            document.getElementById("loading0").style.display = "none";
+            livechart();
+    sensordata(data1,data2);
+            
+            
+        }
+        
+        
+    
+        
+        function secondsToHms(d) {
+           // alert(d)
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " h, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " m, ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " s") : "";
+             
+    
+    //alert(hDisplay + mDisplay + sDisplay)
+    return hDisplay + mDisplay + sDisplay; 
+       }
+    </script>
+    
+     <script async defer
+         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbYy-NXqUjrk0_ZXFK7hwYVvH-vTe29M4&callback=initMap"></script>
+    
+  
+    
+         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+   
+    </div>
+     <div style="z-index: 500;height: 350vh;width: 100%;color: black;position: absolute;background: black;opacity: 0.6;display: none" id="mess_loading">
+        
+        <center>
+            
+            <div style="margin-top: 20%;color: white">
+            <div class="lds-roller2"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <br>
+            Please wait, this will take few seconds
+            
+            </div>
+        
+        
+        
+        </center>
+        </div>
+    
+<script>
+    
+    function switchcontrol(device,node) {
+     //alert("check");
+        var tempdeviceid = "deviceid"+device;
+        var tempswitch = "switch"+device+node;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+    var checkBox = document.getElementById(tempswitch);
+      // alert(tempswitch);
+    //alert(localStorage.getItem(roomselect.concat(fav)));
+      var str1 = "change,"+ack_id+",n"+node;
+      if (checkBox.checked == true){
+         // alert("checked");
+           var result = str1.concat("1");
+          message = new Paho.MQTT.Message(result);
+          message.destinationName = document.getElementById(tempdeviceid).innerHTML;
+    client.send(message);
+     } else {
+              var result = str1.concat("0");
+          message = new Paho.MQTT.Message(result);
+    message.destinationName = document.getElementById(tempdeviceid).innerHTML;
+    client.send(message);
+       // alert(result);
+    }
+        
+     // alert("done"); 
+}
+    
+    var adjustselect;
+    var sensorselect;
+    
+    function adjust(number)
+    {
+        adjustselect = number
+        
+    }
+    
+    function setspeed()
+    {
+        //alert("setspeed")
+        
+        var tempvalue = document.getElementById("speed_slider").value;
+       // alert(setspeed);
+        //alert(adjustselect);
+        var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "adj,"+ack_id+","+tempvalue;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = document.getElementById(tempdeviceid).innerHTML;
+        client.send(message);
+    }
+    
+    function modaladdsensor()
+    {
+      //alert(document.getElementById("addsensorid").value); 
+        var tempsensorsave1 = "sensor"+sensorselect;
+        var tempsensorsave2 = "sensorid"+sensorselect;
+        
+        localStorage.setItem(tempsensorsave1,"1");
+        localStorage.setItem(tempsensorsave2,document.getElementById("addsensorid").value);
+        location.reload();
+    }
+    
+    function addsensor(number)
+    {
+        sensorselect = number;
+        //alert(sensorselect);
+        
+    }
+    
+    function settings2_set1()
+    {
+        
+       var tempvalue = document.getElementById("settings2_input1").value;
+        
+        if(tempvalue != "")
+            {
+       // alert(setspeed);
+        //alert(deviceselect);
+       // var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_filtertime1,"+ack_id+","+tempvalue;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            }
+        else{
+            document.getElementById("settings2_error").style.display = "block";
+            
+        }
+        
+    }
+    
+    function settings2_set2()
+    {
+        
+       var tempvalue = document.getElementById("settings2_input2").value;
+        
+        if(tempvalue != "")
+            {
+       // alert(setspeed);
+        //alert(deviceselect);
+       // var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_filtertime2,"+ack_id+","+tempvalue;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            }
+        else{
+            document.getElementById("settings2_error").style.display = "block";
+            
+        }
+        
+    }
+    
+    function settings3_set()
+    {
+        
+       var tempvalue = document.getElementById("settings3_input").value;
+        
+        if(tempvalue != "")
+            {
+       // alert(setspeed);
+        //alert(deviceselect);
+       // var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_smokevalue,"+ack_id+","+tempvalue;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            }
+        else{
+            document.getElementById("settings3_error").style.display = "block";
+            
+        }
+        
+    }
+    
+    function settings2_button()
+    {
+        var temp_status = "0";
+        if(document.getElementById("settings2_button").checked == true)
+            {
+              temp_status = "1";
+                
+            }
+        
+ 
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_filtercutoff,"+ack_id+","+temp_status;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+        
+    }
+    
+        function settings3_button()
+    {
+        var temp_status = "0";
+        if(document.getElementById("settings3_button").checked == true)
+            {
+              temp_status = "1";
+                
+            }
+        
+      
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_smokecutoff,"+ack_id+","+temp_status;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+        
+    }
+    
+    
+    function sensordata(data1,data2)
+    {
+        
+             smallgraph0 = [];
+             smallgraph1  = [];
+             smallgraph2 = [];
+             smallgraph3 = []; 
+             smallgraph4 = [];
+            smallgraph5 = []; 
+        
+             avgsmallgraph1  = [];
+             avgsmallgraph2 = [];
+             avgsmallgraph3 = []; 
+             avgsmallgraph4 = [];
+        
+             final_smallgraph1  = [];
+             final_smallgraph2 = [];
+             final_smallgraph3 = []; 
+             final_smallgraph4 = [];
+            
+            var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/fetch_sensor_ind_date.php?id="+localStorage.getItem("sensorid")+"&from="+data1+"&to="+data2,false);
+    xmlhttp.send();
+           // alert(data1);
+
+         //   alert("http://localhost/meshling_streetlight/api/fetch_devices_ind_date.php?id="+device+"&from="+data1+"&to="+data2);
+    var data = xmlhttp.responseText;
+           
+     var table1 = JSON.parse(data);
+      // alert(data);
+ 
+
+   
+           // alert("http://localhost/whizly_air_purifier/api/fetch_sensor_ind_date.php?id="+localStorage.getItem("sensorid")+"&from="+data1+"&to="+data2);
+            var splitsdata1 = data1.split("/");
+             var splitsdata2 = data2.split("/");
+        
+                //alert((parseInt(splitsdata2[1])-parseInt(splitsdata1[1])));
+            
+           // alert(data);
+             
+                            
+                           if(data1 == data2)
+                        {
+                            
+                            for(y = 0; y <=24 ; y+=1)
+                                {
+                                    
+                                    
+                                   if(y <10 )
+                                       {
+                                           var j = "0"+y;
+                                           smallgraph0.push(j);
+                                           
+                                           var b = j + ":00";
+                                           smallgraph1.push(b);
+                                           
+                                       }
+                                    else{
+                                  //  alert(y);
+                                    var b = y + ":00";
+                                 smallgraph0.push(String(y));
+                                 smallgraph1.push(b);        
+                                    
+                                    }
+                                    
+                                    smallgraph2.push("0");
+                                    smallgraph3.push("0");
+                                    smallgraph4.push("0");
+                                    smallgraph5.push("0");
+                                    
+                            avgsmallgraph1.push("1");
+                            avgsmallgraph2.push("1");
+                            avgsmallgraph3.push("1");
+                            avgsmallgraph4.push("1");
+                                    
+                                }
+                           
+                           //   alert(graphdata0); 
+                            //alert(graphdata1); 
+                            
+                            //alert("equal");
+                        }
+            
+                for (h = 0; h < table1.length; h +=1) 
+                {    
+                
+                    //alert(data);
+                    var tempdata = table1[h].dates;
+                    var tempsplitsdates = tempdata.split(" ");
+                   // var tempsplitsdates1 = tempsplitsdates[1].split(":")[0];
+                   // alert(data1);
+                    //alert(data2);
+                                   
+                    if(data1 == data2)
+                        {
+                           
+                            //alert(graphdata0);
+                            //alert(tempsplitsdates1);
+                           //alert(graphdata0.indexOf("11"));
+                            //alert(graphdata2[graphdata0.indexOf(tempsplitsdates1)]);
+                              //alert("equal");
+                            //alert(table1[h].data1);
+                            
+                             smallgraph2[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(smallgraph2[smallgraph0.indexOf(tempsplitsdates[1].split(":")[0])])+parseFloat(table1[h].data1)).toFixed(2);
+                            
+                             smallgraph3[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(smallgraph3[smallgraph0.indexOf(tempsplitsdates[1].split(":")[0])])+parseFloat(table1[h].data2)).toFixed(2);
+                            
+                             smallgraph4[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(smallgraph4[smallgraph0.indexOf(tempsplitsdates[1].split(":")[0])])+parseFloat(table1[h].data3)).toFixed(2);
+                            
+                             smallgraph5[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(smallgraph5[smallgraph0.indexOf(tempsplitsdates[1].split(":")[0])])+parseFloat(table1[h].data3)).toFixed(2);
+                               
+                          
+                            
+                            avgsmallgraph1[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(avgsmallgraph1[smallgraph0.indexOf(tempsplitsdates[1].split(":")[0])])+1);
+                            
+                            
+                              avgsmallgraph2[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(avgsmallgraph2[smallgraph0.indexOf(tempsplitsdates[1].split(":")[0])])+1);
+                            
+                              avgsmallgraph3[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(avgsmallgraph3[smallgraph0.indexOf(tempsplitsdates[1].split(":")[0])])+1);
+                            
+                              avgsmallgraph4[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(avgsmallgraph4[smallgraph0.indexOf(tempsplitsdates[1].split(":")[0])])+1);
+                            
+                            
+                           
+                          
+                        }
+                    
+                    else
+                    {
+                                            
+                    
+                    if((parseInt(splitsdata2[1])-parseInt(splitsdata1[1])) < 3)
+                    {
+                        //alert(table1[h].dates);
+                     var dates = table1[h].date;
+                    var splits = dates.split("-");
+                    //alert(splits[2]);
+                  //  alert(splits[1]);
+                   // alert(graphdata1.indexOf(table1[h].date));
+                    
+                    if(smallgraph1.indexOf(table1[h].date) == -1)
+                        
+                        {
+                           // var tempsplits = splits[2]+"/"+splits[1];
+                            //alert(table1[h].data1);
+                            //alert("firstloop");
+                            smallgraph1.push(table1[h].date);
+                            smallgraph2.push(table1[h].data1);
+                            smallgraph3.push(table1[h].data2);
+                            smallgraph4.push(table1[h].data3);
+                            smallgraph5.push(table1[h].data4);
+                            
+                            avgsmallgraph1.push("1");
+                            avgsmallgraph2.push("1");
+                            avgsmallgraph3.push("1");
+                            avgsmallgraph4.push("1");
+                            
+                        }
+                    
+                    else
+                        {
+                            
+                            //alert(parseFloat(table1[h].data1));
+                            //alert("loop2");
+                            //alert(table1[h].date);
+                           
+                            //alert(table1[h].data1);
+                            smallgraph2[smallgraph1.indexOf(table1[h].date)] = parseFloat(parseFloat(smallgraph2[smallgraph1.indexOf(table1[h].date)])+parseFloat(table1[h].data1)).toFixed(2);
+                            
+                             smallgraph3[smallgraph1.indexOf(table1[h].date)] = parseFloat(parseFloat(smallgraph3[smallgraph1.indexOf(table1[h].date)])+parseFloat(table1[h].data2)).toFixed(2);
+                            
+                             smallgraph4[smallgraph1.indexOf(table1[h].date)] = parseFloat(parseFloat(smallgraph4[smallgraph1.indexOf(table1[h].date)])+parseFloat(table1[h].data3)).toFixed(2);
+                            
+                             smallgraph5[smallgraph1.indexOf(table1[h].date)] = parseFloat(parseFloat(smallgraph5[smallgraph1.indexOf(table1[h].date)])+parseFloat(table1[h].data4)).toFixed(2);
+                            
+                            
+                             avgsmallgraph1[smallgraph1.indexOf(table1[h].date)] = parseFloat(parseFloat(avgsmallgraph1[smallgraph1.indexOf(table1[h].date)])+1);
+                            
+                             avgsmallgraph2[smallgraph1.indexOf(table1[h].date)] = parseFloat(parseFloat(avgsmallgraph2[smallgraph1.indexOf(table1[h].date)])+1);
+                            
+                             avgsmallgraph3[smallgraph1.indexOf(table1[h].date)] = parseFloat(parseFloat(avgsmallgraph3[smallgraph1.indexOf(table1[h].date)])+1);
+                            
+                             avgsmallgraph4[smallgraph1.indexOf(table1[h].date)] = parseFloat(parseFloat(avgsmallgraph4[smallgraph1.indexOf(table1[h].date)])+1);
+                                            
+                            
+                           // alert(tempcost);
+                           // alert("smallgraph2"); 
+                          //alert(smallgraph2);
+                            //alert(smallgraph3);
+                            //alert("2ndloop");
+                        }
+                                                                                              
+                                                                                           // alert(smallgraph3);
+                        
+                        
+                    
+                    }
+                        
+                       // alert(smallgraph3[]);
+                    
+                    else{
+                        
+                      //  alert("kjbkj")
+                        
+                        var dates = table1[h].date;
+                    var splits = dates.split("-");
+                    //alert(splits[2]);
+                  //  alert(splits[1]);
+                   // alert(graphdata1.indexOf(table1[h].date));
+                        var tempsplits;
+                        if(splits[1] == "01")
+                            {
+                               tempsplits = "Jan"; 
+                            }
+                       else if(splits[1] == "02")
+                            {
+                               tempsplits = "Feb"; 
+                            }
+                        
+                        else if(splits[1] == "03")
+                            {
+                               tempsplits = "Mar"; 
+                            }
+                        
+                        else if(splits[1] == "04")
+                            {
+                               tempsplits = "Apr"; 
+                            }
+                        
+                        else if(splits[1] == "05")
+                            {
+                               tempsplits = "May"; 
+                            }
+                        else if(splits[1] == "06")
+                            {
+                               tempsplits = "Jun"; 
+                            }
+                        else if(splits[1] == "07")
+                            {
+                               tempsplits = "Jul"; 
+                            }
+                        
+                        else if(splits[1] == "08")
+                            {
+                               tempsplits = "Aug"; 
+                            }
+                        
+                        else if(splits[1] == "09")
+                            {
+                               tempsplits = "Sep"; 
+                            }
+                        
+                        else if(splits[1] == "10")
+                            {
+                               tempsplits = "Oct"; 
+                            }
+                        
+                        else if(splits[1] == "11")
+                            {
+                               tempsplits = "Nov"; 
+                            }
+                        else if(splits[1] == "12")
+                            {
+                               tempsplits = "Dec"; 
+                            }
+                        tempsplits = tempsplits + "-" +splits[0];
+                    
+                    if(graphdata1.indexOf(tempsplits) == -1)
+                        
+                        {
+                           // var tempsplits = splits[2]+"/"+splits[1];
+                            smallgraph1.push(table1[h].date);
+                            smallgraph2.push(table1[h].data1);
+                            smallgraph3.push(table1[h].data2);
+                            smallgraph4.push(table1[h].data3);
+                            smallgraph5.push(table1[h].data4);
+                        }
+                    
+                    else
+                        {
+                            
+                            smallgraph2[smallgraph1.indexOf(tempsplits)] = parseFloat(parseFloat(smallgraph2[smallgraph1.indexOf(tempsplits)])+parseFloat(table1[h].data1)).toFixed(2);
+                            
+                             smallgraph3[smallgraph1.indexOf(tempsplits)] = parseFloat(parseFloat(smallgraph3[smallgraph1.indexOf(tempsplits)])+parseFloat(table1[h].data2)).toFixed(2);
+                            
+                             smallgraph4[smallgraph1.indexOf(tempsplits)] = parseFloat(parseFloat(smallgraphdata3[smallgraph1.indexOf(tempsplits)])+parseFloat(table1[h].data3)).toFixed(2);
+                            
+                             smallgraph5[smallgraph1.indexOf(tempsplits)] = parseFloat(parseFloat(smallgraph5[smallgraph1.indexOf(tempsplits)])+parseFloat(table1[h].data4)).toFixed(2);
+                              
+                        }
+                        
+                        
+                    }
+                    
+                    
+                }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+                                                                                        
+                                                                                        
+                                                                                        
+//alert(graphdata1);
+           // alert(graphdata2);
+            //alert(graphdata3);
+        
+        //alert(smallgraph3);
+        
+        for(u =0 ; u < avgsmallgraph1.length; u +=1)
+            {
+                var temp_data1 = parseFloat(smallgraph2[u]/avgsmallgraph1[u]).toFixed(2);
+                var temp_data2 = parseFloat(smallgraph3[u]/avgsmallgraph2[u]).toFixed(2);
+                var temp_data3 = parseFloat(smallgraph4[u]/avgsmallgraph3[u]).toFixed(2);
+                var temp_data4 = parseFloat(smallgraph5[u]/avgsmallgraph4[u]).toFixed(2);
+                
+                final_smallgraph1.push(temp_data1);
+                final_smallgraph2.push(temp_data2);
+                final_smallgraph3.push(temp_data3);
+                final_smallgraph4.push(temp_data4);
+                //alert(final_smallgraph1);
+            }
+        
+      //  alert(final_smallgraph2);
+        
+            
+            
+var speedCanvas = document.getElementById("sensorchart1");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: smallgraph1,
+  datasets: [{
+    yAxisID: 'A',
+    label: "Co2 (ppm)",
+    data: final_smallgraph1,
+      borderColor: 'rgb(127,96,250)',
+      backgroundColor: 'rgb(127,96,250,0.1)',
+  }
+                        
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+                            
+         
+             document.getElementById("loading2").style.display = "none";
+        
+        
+        
+        var speedCanvas = document.getElementById("sensorchart2");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: smallgraph1,
+  datasets: [{
+    yAxisID: 'A',
+    label: "PM2.5 (ug/m3)",
+    data : final_smallgraph2,
+      borderColor: 'rgb(252,92,137)',
+      backgroundColor: 'rgb(252,92,137,0.1)',
+  }
+                        
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+                            
+         
+             document.getElementById("loading3").style.display = "none";
+        
+        
+        var speedCanvas = document.getElementById("sensorchart3");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: smallgraph1,
+  datasets: [{
+    yAxisID: 'A',
+    label: "Temperature (*C)",
+    data: final_smallgraph3,
+      borderColor: 'rgb(0,98,255)',
+      backgroundColor: 'rgb(0,98,255,0.1)',
+  }
+                        
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+                            
+         
+             document.getElementById("loading4").style.display = "none";
+        
+        
+        var speedCanvas = document.getElementById("sensorchart4");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: smallgraph1,
+  datasets: [{
+    yAxisID: 'A',
+    label: "Humidity (Rh)",
+    data: final_smallgraph4,
+      borderColor: 'rgb(255,102,0)',
+      backgroundColor: 'rgb(255,102,0,0.1)',
+  }
+                        
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+                            
+         
+             document.getElementById("loading5").style.display = "none";
+        
+    }
+     //  var adjustselect;
+    //var sensorselect;
+    var autoselect;
+    var deviceselect;
+    
+     function auto_set(number)
+    {
+        var temp_sensorid = "sensorid"+number;
+        autoselect = document.getElementById(temp_sensorid).innerHTML;
+        
+        var tempdeviceid = "deviceid"+number;
+        deviceselect = document.getElementById(tempdeviceid).innerHTML;
+        
+   
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "auto_get,"+ack_id;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = autoselect;
+        client.send(message);
+        
+       // alert(autoselect);
+        
+    }
+    
+    function automode()
+    {
+        
+        var status1;
+        if(document.getElementById("automode").checked == true)
+            {
+                status1 = "1";
+                
+            }
+        else
+        {
+        
+            status1 = "0";
+        
+        }
+        
+         //var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "auto_set,"+ack_id+","+status1;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = autoselect;
+        client.send(message);
+        
+    }
+    
+    function livechart()
+    {
+        var speedCanvas = document.getElementById("livechart");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: livetimegraph,
+  datasets: [{
+    yAxisID: 'A',
+    label: "Co2 (ppm)",
+    data: livegraph1,
+      borderColor: 'rgb(127,96,250)',
+      backgroundColor: 'rgb(127,96,250,0.1)',
+  }
+            ,
+             
+             {
+    yAxisID: 'B',
+    label: "PM2.5 (ug/m3)",
+    data: livegraph2,
+      borderColor: 'rgb(252,92,137)',
+      backgroundColor: 'rgb(252,92,137,0.1)',
+  }
+             ,
+             {
+    yAxisID: 'C',
+    label: "Temperature (*c)",
+    data: livegraph3,
+    borderColor: 'rgb(0,98,255)',
+      backgroundColor: 'rgb(0,98,255,0.1)',
+  }
+             ,
+             {
+    yAxisID: 'D',
+    label: "Humidity (Rh)",
+    data: livegraph4,
+     borderColor: 'rgb(255,102,0)',
+      backgroundColor: 'rgb(255,102,0,0.1)',
+  }
+            
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+                 ticks: {
+                beginAtZero:true
+            },
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+      },
+                   {
+                        ticks: {
+                beginAtZero:true
+            },
+               gridLines: {
+                  display: false
+               },
+                    id: 'B',
+        type: 'linear',
+        position: 'left',
+      },
+              
+                    
+                              {
+                                   ticks: {
+                beginAtZero:true
+            },
+               gridLines: {
+                  display: false
+               },
+                    id: 'C',
+        type: 'linear',
+        position: 'right',
+      },
+                    {
+                         ticks: {
+                beginAtZero:true
+            },
+               gridLines: {
+                  display: false
+               },
+        id: 'D',
+        type: 'linear',
+        position: 'right',
+      
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+ livechart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+        
+    }
+    
+    function settings(number)
+    {
+        if(number == "1")
+            
+            {
+                document.getElementById("settings_div2").style.display = "none";
+                document.getElementById("settings_div3").style.display = "none";
+                document.getElementById("settings_div1").style.display = "block";
+                
+                document.getElementById("settings_button2").style.background = "none";
+                document.getElementById("settings_button3").style.background = "none";
+                document.getElementById("settings_button1").style.background = "grey";
+                
+            }
+        
+        else if(number == "2")
+            
+            {
+                document.getElementById("settings_div1").style.display = "none";
+                document.getElementById("settings_div3").style.display = "none";
+                document.getElementById("settings_div2").style.display = "block";
+                
+                document.getElementById("settings_button1").style.background = "none";
+                document.getElementById("settings_button3").style.background = "none";
+                document.getElementById("settings_button2").style.background = "grey";
+                
+
+   
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "get_filter,"+ack_id;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            
+        
+    
+            }
+        
+         else if(number == "3")
+            
+            {
+                document.getElementById("settings_div2").style.display = "none";
+                document.getElementById("settings_div1").style.display = "none";
+                document.getElementById("settings_div3").style.display = "block";
+                      
+                document.getElementById("settings_button1").style.background = "none";
+                document.getElementById("settings_button2").style.background = "none";
+                document.getElementById("settings_button3").style.background = "grey";
+                
+                        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "get_smokedata,"+ack_id;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            }
+        
+        
+    }
+    
+    </script>
+
+</body>
+
+</html>

@@ -2,16 +2,2399 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Vanilla JavaScript App</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Pneoterik - Smart air purifier</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/spinner.css">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/mqtt.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<style>
+    
+     #map {
+         height: 100%;
+         position: relative;
+         }
+    
+    #map_modal {
+         height: 100%;
+         position: relative;
+         }
+    
+    .switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(25px);
+  -ms-transform: translateX(25px);
+  transform: translateX(25px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+    
+    
+    
+
+    
+    </style>
 </head>
 
-<body>
-  <main>
-    <h1>Vanilla JavaScript App</h1>
-  </main>
+<body onload="initialize()">
+<div style="position: absolute;width: 100%;height: 100%;">
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header" style="height: 10%">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <b class="logo-abbr"><img src="images/logo.png" alt=""> </b>
+                    <span class="logo-compact"><img src="./images/logo-compact.png" alt=""></span>
+                    <span class="brand-title">
+                        <img src="images/login-logo.png" alt="" height="85px" width="160px">
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+ 
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+ 
+            <div class="container-fluid mt-3">
+                <center>
+                    
+                      <div class="lds-ellipsis" id="loading0"><div></div><div></div><div></div><div></div></div>
+                    </center>
+                <div class="row" style="float: right;margin-right: 5%"><button style="background: none;border: none;color: grey" onclick="logout()"><u>Logout</u></button></div>
+                <br>
+                <br>
+                <div class="row">
+                 
+                    
+                    
+                     <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-3">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total purifier</h3>
+                               
+                                
+                                <div class="d-inline-block">
+                                   <h2 class="text-white" ><span id="totpur">00</span></h2>
+                                    <p class="text-white mb-0" onclick="mydevices()" ><u>My devices</u></p>                                    
+                                      
+                                    
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-tachometer"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-1">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total Energy consumption</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white" ><span id="totcons">00</span> Kwh</h2>
+                                    <p class="text-white mb-0" ><span id="totcost">00</span> INR</p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-bar-chart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-2">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Offline Devices</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white" ><span id="totoffline">00</span></h2>
+                                    <p class="text-white mb-0" onclick="mydevices()" ><u>My devices</u></p> 
+                       
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-line-chart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                   
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-4">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Avg sensor reading</h3>
+                                <div class="d-inline-block">
+                                    
+                                    <p class="text-white mb-0">Co2 = <span id="avg_data1">00</span></p>
+                                     <p class="text-white mb-0">PM 2.5 = <span id="avg_data2">00</span></p>
+                                     <p class="text-white mb-0">Temp = <span id="avg_data3">00</span></p>
+                                     <p class="text-white mb-0">Humidity = <span id="avg_data4">00</span></p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-line-chart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                             <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    
+                                    <div class="card-body pb-0 d-flex justify-content-between">
+                                        <div>
+                                            
+                                            <h4 class="mb-1">Consolidated data</h4>
+                                                                                 
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="chart-wrapper">
+                                        <center>
+                                        <div class="lds-roller1" id="loading1" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                         <canvas id="speedChart" ></canvas>
+                                        
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="w-100 mr-2">
+                                                <h6>Energy consumption</h6>
+                                                <h4 id="totgraphcons">00 KWh</h4>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-danger" style="width: 40%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 w-100">
+                                                <h6>Cost incured</h6>
+                                                <h4 id="totgraphcost">00 INR</h4>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 w-100">
+                                                <h6>Run time</h6>
+                                                <h4 id="totgraphruntime">00h 00m 00s</h4>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-warning" style="width: 80%"></div>
+                                                </div>
+                                            </div>
+                                            
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                
+    
+                
+                
+
+                <div class="row">
+                    <div style="width: 100%;font-size: 20px;margin-bottom: 2%;margin-left: 2%">Air purifier
+                    
+                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" style="float: right;margin-right: 5%" data-toggle="modal" data-target="#modaldevices">Add device</button>
+                         <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="mydevices()" style="float: right;margin-right: 2%">My devices</button>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="active-member">
+                                    <div class="table-responsive">
+                                        <table class="table table-xs mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>S no.</th>
+                                                    <th>Device ID</th>
+                                                    <th>Sensor ID</th>
+                                                    <th>CO2</th>
+                                                    <th>PM2.5</th>
+                                                    <th>Temperature</th>
+                                                    <th>Humidity</th>
+                                                    <th>Smoke level</th>
+                                                    <th>control 1</th>
+                                                    <th>control 2</th>
+                                                    <th>control 3</th>
+                                                    <th>control 4</th>
+                                                    <th></th>
+                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                 <td id="sno1">****</td>
+                                                 <td id="deviceid1">****</td>
+                                                 <td><span id="sensorid1">****</span>
+                                                    <br>
+                                                     <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="addsensor('1')" id="addsensor1" data-toggle="modal" data-target="#modalsensors">Add sensor</button></td>
+                                                 <td id="data1_value1">****</td>    
+                                                 <td id="data1_value2">****</td>  
+                                                 <td id="data1_value3">****</td>  
+                                                 <td id="data1_value4">****</td> 
+                                                 <td id="data1_value5">****</td>  
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch11" onclick="switchcontrol('1','1')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch12" onclick="switchcontrol('1','2')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch13" onclick="switchcontrol('1','3')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch14" onclick="switchcontrol('1','4')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>      
+                                               
+                                                        
+                                                 <td>
+                                                   <button type="button" class="btn mb-1 btn-rounded btn-primary" onclick="adjust('1')" data-toggle="modal" data-target="#modalbrightness">Adjust</button>
+                                                     
+                                                     
+                                                    
+                                                 </td>
+                                                    <td>
+                                                      <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="auto_set('1')" data-toggle="modal" data-target="#modaledit">
+                                   <i class="fa fa-edit gradient-4-text"></i>
+                                    </button>
+                                                    
+                                                    </td>
+                                                    
+                                                    <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="knowmore('1')">Know more</button>
+                                                    
+                                                 </td>
+                                                    
+                                                    
+                                               
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                 <td id="sno2">****</td>
+                                                 <td id="deviceid2">****</td>
+                                                 <td><span id="sensorid2">****</span>
+                                                    <br>
+                                                     <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="addsensor('2')" id="addsensor2" data-toggle="modal" data-target="#modalsensors">Add sensor</button></td>
+                                                 <td id="data2_value1">****</td>    
+                                                 <td id="data2_value2">****</td>  
+                                                 <td id="data2_value3">****</td>  
+                                                 <td id="data2_value4">****</td> 
+                                                <td id="data2_value5">****</td>      
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch21" onclick="switchcontrol('2','1')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch22" onclick="switchcontrol('2','2')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch23" onclick="switchcontrol('2','3')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch24" onclick="switchcontrol('2','4')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>      
+                                               
+                                                        
+                                                 <td>
+                                                   <button type="button" class="btn mb-1 btn-rounded btn-primary" onclick="adjust('2')">Adjust</button>
+                                                    
+                                                 </td>
+                                                    
+                                                     <td>
+                                                      <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="auto_set('2')" data-toggle="modal" data-target="#modaledit">
+                                   <i class="fa fa-edit gradient-4-text"></i>
+                                    </button>
+                                                    
+                                                    </td>
+                                                    
+                                                    <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="knowmore('2')">Know more</button>
+                                                    
+                                                 </td>
+                                               
+                                                </tr>
+                                                
+                                                <tr>
+                                                 <td id="sno3">****</td>
+                                                 <td id="deviceid3">****</td>
+                                                 <td><span id="sensorid3">****</span>
+                                                    <br>
+                                                     <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="addsensor('3')" id="addsensor3"  data-toggle="modal" data-target="#modalsensors">Add sensor</button></td>
+                                                 <td id="data3_value1">****</td>    
+                                                 <td id="data3_value2">****</td>  
+                                                 <td id="data3_value3">****</td>  
+                                                 <td id="data3_value4">****</td>
+                                                    <td id="data3_value5">****</td>  
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch31" onclick="switchcontrol('3','1')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch32" onclick="switchcontrol('3','2')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch33" onclick="switchcontrol('3','3')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch34" onclick="switchcontrol('3','4')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>      
+                                               
+                                                        
+                                                 <td>
+                                                   <button type="button" class="btn mb-1 btn-rounded btn-primary" onclick="adjust('3')">Adjust</button>
+                                                    
+                                                 </td>
+                                                    
+                                                     <td>
+                                                      <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="auto_set('3')" data-toggle="modal" data-target="#modaledit">
+                                   <i class="fa fa-edit gradient-4-text"></i>
+                                    </button>
+                                                    
+                                                    </td>
+                                                    
+                                                    <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="knowmore('3')">Know more</button>
+                                                    
+                                                 </td>
+                                               
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                 <td id="sno4">****</td>
+                                                 <td id="deviceid4">****</td>
+                                                 <td><span id="sensorid4">****</span>
+                                                    <br>
+                                                     <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="addsensor('4')" id="addsensor4"  data-toggle="modal" data-target="#modalsensors">Add sensor</button></td>
+                                                 <td id="data4_value1">****</td>    
+                                                 <td id="data4_value2">****</td>  
+                                                 <td id="data4_value3">****</td>  
+                                                 <td id="data4_value4">****</td> 
+                                                  <td id="data4_value5">****</td>  
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch41" onclick="switchcontrol('4','1')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch42" onclick="switchcontrol('4','2')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch43" onclick="switchcontrol('4','3')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch44" onclick="switchcontrol('4','4')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>      
+                                               
+                                                        
+                                                 <td>
+                                                   <button type="button" class="btn mb-1 btn-rounded btn-primary" onclick="adjust('4')">Adjust</button>
+                                                    
+                                                 </td>
+                                                    
+                                                     <td>
+                                                      <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="auto_set('4')" data-toggle="modal" data-target="#modaledit">
+                                   <i class="fa fa-edit gradient-4-text"></i>
+                                    </button>
+                                                    
+                                                    </td>
+                                                    
+                                                    <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="knowmore('4')">Know more</button>
+                                                    
+                                                 </td>
+                                               
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                 <td id="sno5">****</td>
+                                                 <td id="deviceid5">****</td>
+                                                 <td><span id="sensorid5">****</span>
+                                                    <br>
+                                                     <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="addsensor('5')" id="addsensor5"  data-toggle="modal" data-target="#modalsensors">Add sensor</button></td>
+                                                 <td id="data5_value1">****</td>    
+                                                 <td id="data5_value2">****</td>  
+                                                 <td id="data5_value3">****</td>  
+                                                 <td id="data5_value4">****</td>
+                                                 <td id="data5_value5">****</td>      
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch51" onclick="switchcontrol('5','1')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                 <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch52" onclick="switchcontrol('5','2')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch53" onclick="switchcontrol('5','3')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>
+                                                <td> <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="switch54" onclick="switchcontrol('5','4')">
+                                                     <span class="slider round"></span>
+                                                    </label></td>      
+                                               
+                                                        
+                                                 <td>
+                                                   <button type="button" class="btn mb-1 btn-rounded btn-primary" onclick="adjust('5')">Adjust</button>
+                                                    
+                                                 </td>
+                                                    
+                                                     <td>
+                                                      <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="auto_set('5')" data-toggle="modal" data-target="#modaledit">
+                                   <i class="fa fa-edit gradient-4-text"></i>
+                                    </button>
+                                                    
+                                                    </td>
+                                                    
+                                                    <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" onclick="knowmore('5')">Know more</button>
+                                                    
+                                                 </td>
+                                               
+                                                </tr>
+                                                
+                                               
+                                                
+                                                
+                                               
+                                                
+                                                
+                                                
+                                                
+                              
+                                            </tbody>
+                                        </table>
+                                        <center>
+                                   
+                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" style="float: left" onclick="prev()">Prev</button>
+                                    
+                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" style="float: right" onclick="next()">Next</button>
+                                         <div style="float: clear;margin: auto" id="page1">1</div>
+                                    </center>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+
+
+
+                
+
+
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+                                  <div class="modal fade" id="modalbrightness">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Speed control</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                
+                                                    
+                                                    
+                                                    
+
+                                                    <h5>Set speed</h5>
+                                                    <hr>
+                                                    <center>
+                                                        <br>
+                                                        
+                                                           <input type="range" min="1" max="100" value="100" style="width: 90%" id="speed_slider">
+                                                    <br>
+                                                    <br>
+                                                    
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-info" style="width: 25%" onclick="setspeed()">Set</button>
+                                                    </center>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                               <div class="modal fade" id="modaledit">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Settings</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                    
+                                                    
+                                                </div>
+                                                <div class="modal-body">
+                                                <button style="display: inline;width: 32%;padding: 5px;background:grey;border: none;border-bottom: 1px solid grey" onclick="settings('1')" id="settings_button1">Auto mode</button>
+                                                <button style="display: inline;width: 32%;padding: 5px;background: none;border: none;border-bottom: 1px solid grey" onclick="settings('2')" id="settings_button2">Filter change</button>
+                                                <button style="display: inline;width: 32%;padding: 5px;background: none;border: none;border-bottom: 1px solid grey" onclick="settings('3')" id="settings_button3">Smoke sensor</button>    
+                                                
+                                        <div style="display: block" id="settings_div1">
+                                                    <center>
+                                        <div class="lds-roller1" id="loading_settings1" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                                    
+
+                                                    <h5 style="float: left">Auto mode</h5>
+                                                    
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox" id="automode" onclick="automode()">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                                                    
+                                        </div>
+                                                    
+                                                    
+                                                    
+                                        <div style="display: none" id="settings_div2">
+                                                    <center>
+                                        <div class="lds-roller1" id="loading_settings2" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                                    
+                                                       <h5 style="padding-top: 5px">Set Run-time for filter change
+                                                        <a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="Once the air purifier run-time reaches the set thershold,alert will be provided for change of filter" style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                        </h5>
+                                                     <input type="number" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter runtime in hours" id="settings2_input1">      
+                                                    <br>
+                                            <br>
+                                            <center>
+                                            <button type="button" class="btn mb-1 btn-rounded btn-outline-info" style="width: 25%" onclick="settings2_set1()">Set</button>
+                                            </center>
+                                                        
+                                                       
+                                                    <hr>
+                                                         <h5 style="padding-top: 5px">Filter change Auto cut-off settings<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="once the upper runtime limit is reached the filter needs to be changed and operating the purifier without the change of filter will damage the device " style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                        </h5>
+                                                        
+                                                        <p>Auto-cutoff<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="By turning on this feature the device will automaticaly switch off when the filter aut-cutoff timing is reached" style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox" id="settings2_button" onclick="settings2_button()">
+                                                     <span class="slider round"></span>
+                                                    </label></p>
+                                                        
+                                                     <input type="number" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter filter cut-off run time" id="settings2_input2"> 
+                                            
+                                            <br>
+                                            <br>
+                                            <center>
+                                            <button type="button" class="btn mb-1 btn-rounded btn-outline-info" style="width: 25%" onclick="settings2_set2()">Set</button>
+                                            </center>
+                                                        
+                                                    <div style="color: red;display: none" id="settings2_error">Enter valid details</div>
+                                                        
+                                                        
+                                     </div>
+                                                    
+                                                    
+                                        <div style="display:none" id="settings_div3">
+                                                    <center>
+                                        <div class="lds-roller1" id="loading_settings3" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                                    
+                                               
+                                                         <h5 style="padding-top: 5px">Smoke sensor Auto cut-off settings<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="once the upper runtime limit is reached the filter needs to be changed and operating the purifier without the change of filter will damage the device " style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                        </h5>
+                                                        
+                                                        <p>Smoke Auto-cutoff<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="By turning on this feature the device will automaticaly switch off when the system detects any presence of smoke" style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox" id="settings3_button" onclick="settings3_button()">
+                                                     <span class="slider round"></span>
+                                                    </label></p>
+                                                        
+                                                     <input type="number" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter smoke cut-off value" id="settings3_input"> 
+                                                        
+                                                      <br>
+                                            <br>
+                                            <center>
+                                            <button type="button" class="btn mb-1 btn-rounded btn-outline-info" style="width: 25%" onclick="settings3_set()">Set</button>
+                                            </center>
+                                                        
+                                               <div style="color: red;display: none" id="settings3_error">Enter valid details</div>          
+                                                    
+                                                    
+                                                    
+                                                
+                                                    
+                                    </div>
+                                                    
+                                                    
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+        
+                               <div class="modal fade" id="modalsensors">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Add new sensor</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                               
+                                                    
+                                                    
+                                                  
+                                                      <h5 style="padding-top: 5px">Device  ID:<span id="sensormodalid"></span></h5>                                            
+                                                       <h5 style="padding-top: 5px">Sensor ID</h5>
+                                                     <input type="text" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter sensor ID" id="addsensorid">
+                                                    
+                                                  
+                                                     
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" onclick="modaladdsensor()">Add sensor</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div class="modal fade" id="modaldevices">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Add new device</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                               
+                                                    
+                                                    
+                                                  
+                                                    <h5 style="padding-top: 5px">Device ID</h5>
+                                                     <input type="text" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter device ID" id="adddeviceid">
+                                                                                                
+                                                  
+                                                     
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" onclick="modaladddevice()">Add device</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright &copy; Designed & Developed by <a href="https://thewhizly.com">Aioty labs</a> 2021</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="plugins/common/common.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/gleek.js"></script>
+    <script src="js/styleSwitcher.js"></script>
+
+    <!-- Chartjs -->
+    <script src="./plugins/chart.js/Chart.bundle.min.js"></script>
+    <!-- Circle progress -->
+    <script src="./plugins/circle-progress/circle-progress.min.js"></script>
+    <!-- Datamap -->
+    <script src="./plugins/d3v3/index.js"></script>
+    <script src="./plugins/topojson/topojson.min.js"></script>
+    <script src="./plugins/datamaps/datamaps.world.min.js"></script>
+    <!-- Morrisjs -->
+    <script src="./plugins/raphael/raphael.min.js"></script>
+    <script src="./plugins/morris/morris.min.js"></script>
+    <!-- Pignose Calender -->
+    <script src="./plugins/moment/moment.min.js"></script>
+    <script src="./plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+    <!-- ChartistJS -->
+    <script src="./plugins/chartist/js/chartist.min.js"></script>
+    <script src="./plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
+
+
+
+    <script src="./js/dashboard/dashboard-1.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    
+        <script>
+            var arr = [];
+    
+     client = new Paho.MQTT.Client("165.22.219.33",9001, "web_" + parseInt(Math.random() * 100, 10));
+  // set callback handlers
+  client.onConnectionLost = onConnectionLost;
+  client.onMessageArrived = onMessageArrived;
+  var options = {
+     // alert("initialstarted");
+    useSSL: false,
+    userName: "whizly",
+    password: "whizly2021!",
+    onSuccess:onConnect,
+    onFailure:doFail
+  }
+
+  // connect the client
+  client.connect(options);
+
+  // called when the client connects
+  function onConnect() {
+       
+     //alert("onconnect");
+           var ack_id = Math.floor(Math.random()*9000000) + 1000000;
+    var tempmes = "Whizly-air purifier dashboard refreshed";
+ //   client.subscribe(livingd1);
+    message = new Paho.MQTT.Message(tempmes);
+    message.destinationName = "air-purifier";
+    client.send(message);
+      
+      
+      //alert(document.getElementById("deviceid1").innerHTML);
+        
+        
+      
+  }
+    
+  
+  function doFail(e){
+    console.log(e);
+      ///alert(JSON.stringify(e));
+     
+  }
+
+  // called when the client loses its connection
+  function onConnectionLost(responseObject) {
+      //alert(JSON.stringify(responseObject));
+      
+      swal({
+  title: "Connection timeout",
+  text: "Reload to establish connection with your devices",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+      
+  location.reload();
+      
+  } else {
+   
+  }
+});
+
+  }
+        
+          function onMessageArrived(message)
+    {
+        
+      var rec = message.payloadString;
+  //    var active =0;
+    // alert(rec)
+      var splits = rec.split(",");
+      
+      //
+       if(rec.length >3 && splits[0] == "fb"){
+           
+           if(splits[2] == document.getElementById("deviceid1").innerHTML)
+               {
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("switch11").checked = true;
+                       }
+                   
+                   if(splits[4] == "1")
+                       {
+                           document.getElementById("switch12").checked = true;
+                       }
+                   
+                   if(splits[5] == "1")
+                       {
+                           document.getElementById("switch13").checked = true;
+                       }
+                   
+                   if(splits[6] == "1")
+                       {
+                           document.getElementById("switch14").checked = true;
+                       }
+                   
+                   
+               }
+           
+           else if(splits[2] == document.getElementById("deviceid2").innerHTML)
+               {
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("switch21").checked = true;
+                       }
+                   
+                   if(splits[4] == "1")
+                       {
+                           document.getElementById("switch22").checked = true;
+                       }
+                   
+                   if(splits[5] == "1")
+                       {
+                           document.getElementById("switch23").checked = true;
+                       }
+                   
+                   if(splits[6] == "1")
+                       {
+                           document.getElementById("switch24").checked = true;
+                       }
+                   
+                   
+               }
+           
+           if(splits[2] == document.getElementById("deviceid3").innerHTML)
+               {
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("switch31").checked = true;
+                       }
+                   
+                   if(splits[4] == "1")
+                       {
+                           document.getElementById("switch32").checked = true;
+                       }
+                   
+                   if(splits[5] == "1")
+                       {
+                           document.getElementById("switch33").checked = true;
+                       }
+                   
+                   if(splits[6] == "1")
+                       {
+                           document.getElementById("switch34").checked = true;
+                       }
+                   
+                   
+               }
+           
+           if(splits[2] == document.getElementById("deviceid4").innerHTML)
+               {
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("switch41").checked = true;
+                       }
+                   
+                   if(splits[4] == "1")
+                       {
+                           document.getElementById("switch42").checked = true;
+                       }
+                   
+                   if(splits[5] == "1")
+                       {
+                           document.getElementById("switch43").checked = true;
+                       }
+                   
+                   if(splits[6] == "1")
+                       {
+                           document.getElementById("switch44").checked = true;
+                       }
+                   
+                   
+               }
+           
+           if(splits[2] == document.getElementById("deviceid5").innerHTML)
+               {
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("switch51").checked = true;
+                       }
+                   
+                   if(splits[4] == "1")
+                       {
+                           document.getElementById("switch52").checked = true;
+                       }
+                   
+                   if(splits[5] == "1")
+                       {
+                           document.getElementById("switch53").checked = true;
+                       }
+                   
+                   if(splits[6] == "1")
+                       {
+                           document.getElementById("switch54").checked = true;
+                       }
+                   
+                   
+               }
+           
+           for( var i = 0; i < arr.length; i++){ 
+    
+        if ( arr[i] === splits[2]) { 
+    
+            arr.splice(i, 1); 
+        }
+    
+    }
+           
+           document.getElementById("totoffline").innerHTML = arr.length;
+              
+       }
+        
+        if(rec.length >3 && splits[0] == "sensor"){
+            
+                 
+           if(splits[2] == document.getElementById("sensorid1").innerHTML)
+               {
+           
+       
+                 
+                           document.getElementById("data1_value1").innerHTML = splits[3] + "ppm";
+                          document.getElementById("data1_value2").innerHTML = splits[4]+ " ug/m3";
+                         document.getElementById("data1_value3").innerHTML = splits[5]+ " *C";
+                         document.getElementById("data1_value4").innerHTML = splits[6]+ " Rh";
+                   
+               }
+            
+            else if(splits[2] == document.getElementById("sensorid2").innerHTML)
+               {
+           
+       
+                 
+                           document.getElementById("data2_value1").innerHTML = splits[3] + "ppm";
+                          document.getElementById("data2_value2").innerHTML = splits[4]+ " ug/m3";
+                         document.getElementById("data2_value3").innerHTML = splits[5]+ " *C";
+                         document.getElementById("data2_value4").innerHTML = splits[6]+ " Rh";
+                   
+               }
+            
+            
+            else if(splits[2] == document.getElementById("sensorid3").innerHTML)
+               {
+           
+       
+                 
+                           document.getElementById("data3_value1").innerHTML = splits[3] + "ppm";
+                          document.getElementById("data3_value2").innerHTML = splits[4]+ " ug/m3";
+                         document.getElementById("data3_value3").innerHTML = splits[5]+ " *C";
+                         document.getElementById("data3_value4").innerHTML = splits[6]+ " Rh";
+                   
+               }
+            
+            else if(splits[2] == document.getElementById("sensorid4").innerHTML)
+               {
+           
+       
+                 
+                           document.getElementById("data4_value1").innerHTML = splits[3] + "ppm";
+                          document.getElementById("data4_value2").innerHTML = splits[4]+ " ug/m3";
+                         document.getElementById("data4_value3").innerHTML = splits[5]+ " *C";
+                         document.getElementById("data4_value4").innerHTML = splits[6]+ " Rh";
+                   
+               }
+            
+            else if(splits[2] == document.getElementById("sensorid5").innerHTML)
+               {
+           
+       
+                 
+                           document.getElementById("data5_value1").innerHTML = splits[3] + "ppm";
+                          document.getElementById("data5_value2").innerHTML = splits[4]+ " ug/m3";
+                         document.getElementById("data5_value3").innerHTML = splits[5]+ " *C";
+                         document.getElementById("data5_value4").innerHTML = splits[6]+ " Rh";
+                   
+               }
+            
+                      
+                   
+           
+                   
+                   
+             //  }
+              
+       }
+        
+        
+         if(rec.length >3 && splits[0] == "smoke"){
+            
+                 
+           if(splits[2] == document.getElementById("deviceid1").innerHTML)
+               {
+                   
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("data1_value5").innerHTML = "Normal" + "("+splits[4]+")";
+                       }
+                   else{
+                       
+                       document.getElementById("data1_value5").innerHTML = "Bad" + "("+splits[4]+")";
+                       
+                   }
+                   
+                   
+               }
+             
+             else if(splits[2] == document.getElementById("deviceid2").innerHTML)
+               {
+                   
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("data2_value5").innerHTML = "Normal" + "("+splits[4]+")";
+                       }
+                   else{
+                       
+                       document.getElementById("data2_value5").innerHTML = "Bad" + "("+splits[4]+")";
+                       
+                   }
+                   
+                   
+               }
+             
+             
+             else if(splits[2] == document.getElementById("deviceid3").innerHTML)
+               {
+                   
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("data3_value5").innerHTML = "Normal" + "("+splits[4]+")";
+                       }
+                   else{
+                       
+                       document.getElementById("data3_value5").innerHTML = "Bad" + "("+splits[4]+")";
+                       
+                   }
+                   
+                   
+               }
+             
+             else if(splits[2] == document.getElementById("deviceid4").innerHTML)
+               {
+                   
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("data4_value5").innerHTML = "Normal" + "("+splits[4]+")";
+                       }
+                   else{
+                       
+                       document.getElementById("data4_value5").innerHTML = "Bad" + "("+splits[4]+")";
+                       
+                   }
+                   
+                   
+               }
+             
+             else if(splits[2] == document.getElementById("deviceid5").innerHTML)
+               {
+                   
+                   if(splits[3] == "1")
+                       {
+                           document.getElementById("data5_value5").innerHTML = "Normal" + "("+splits[4]+")";
+                       }
+                   else{
+                       
+                       document.getElementById("data5_value5").innerHTML = "Bad" + "("+splits[4]+")";
+                       
+                   }
+                   
+                   
+               }
+             
+             
+             
+             
+             
+         }
+        
+        
+        if(rec.length >3 && splits[0] == "auto_reply"){
+            
+            if(splits[2] == autoselect)
+               {
+                 if(splits[3] == "1")
+                     {
+                         document.getElementById("automode").checked = true;
+                     }
+                   
+           document.getElementById("loading_settings1").style.display = "none";
+               }
+            
+            
+        }
+        
+         if(rec.length >3 && splits[0] == "filter_reply"){
+            
+            if(splits[2] == deviceselect)
+               {
+                   document.getElementById("settings2_input1").value = splits[3];
+                   
+                 if(splits[4] == "1")
+                     {
+                         document.getElementById("settings2_button").checked = true;
+                     }
+                   document.getElementById("settings2_input2").value = splits[5];
+                   
+                   document.getElementById("loading_settings2").style.display = "none";
+               }
+            
+            
+        }
+        
+        if(rec.length >3 && splits[0] == "smoke_reply"){
+            
+            if(splits[2] == deviceselect)
+               {
+                   //document.getElementById("settings2_input1").value = splits[3];
+                   
+                 if(splits[3] == "1")
+                     {
+                         document.getElementById("settings3_button").checked = true;
+                     }
+                   document.getElementById("settings3_input").value = splits[4];
+                   
+                   document.getElementById("loading_settings3").style.display = "none";
+               }
+            
+            
+        }
+    }
+    </script>
+    
+    <script>
+        var f =0;
+        var m1 = 1;
+        var totdue = 0;
+        
+         var ack_id;
+   var monthdata0 = [];
+         var monthdata1 = [];
+         var monthdata2 = [];
+         var monthdata3 = [];
+        
+        
+        
+        function initialize()
+        
+        {
+            //localStorage.setItem("email","maheshlakshmipathi@gmail.com");   
+           if(localStorage.getItem("login") != "done")
+          {
+              window.location.href = "login.html";
+          }
+          
+             setTimeout(tableload,4000);
+            
+        }
+        
+        
+  
+        
+        function tableload()
+        {
+            
+            //alert(document.getElementById("sensorid2").innerHTML);
+                        var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/fetch_devices.php?email="+localStorage.getItem("email"),false);
+    xmlhttp.send();
+
+        //  alert("http://localhost/meshling_streetlight/api/fetch_devices_id.php?email="+localStorage.getItem("email")+"&id="+device);
+    var data4 = xmlhttp.responseText;
+            
+         //  alert(data4);
+      var table4 = JSON.parse(data4);
+            
+      //alert(data4)
+           
+                                                                
+            document.getElementById("totpur").innerHTML = table4.length;
+                  if(f < table4.length)
+         {
+             document.getElementById("sno1").innerHTML = f+1;
+             document.getElementById("deviceid1").innerHTML = table4[f].id;
+             if(table4[f].sensor_id != "")
+                 {
+                     document.getElementById("addsensor1").style.display = "none";
+             document.getElementById("sensorid1").innerHTML = table4[f].sensor_id; 
+                client.subscribe(document.getElementById("sensorid1").innerHTML);
+                var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid1").innerHTML;
+                client.send(message);
+                 }
+                    
+             
+         }
+            
+            
+                if(f+1 < table4.length)
+         {
+             document.getElementById("sno2").innerHTML = f+2;
+              document.getElementById("deviceid2").innerHTML = table4[f+1].id;
+               if(table4[f+1].sensor_id != "")
+                 {
+                     document.getElementById("addsensor2").style.display = "none";
+             document.getElementById("sensorid2").innerHTML = table4[f+1].sensor_id;
+             
+                client.subscribe(document.getElementById("sensorid2").innerHTML);
+                var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid2").innerHTML;
+                client.send(message);
+                 }
+             
+             
+         }
+            
+            if(f+2 < table4.length)
+         {
+             document.getElementById("sno3").innerHTML = f+3;
+             document.getElementById("deviceid3").innerHTML = table4[f+2].id;
+               if(table4[f+2].sensor_id != "")
+                 {
+                     
+                     document.getElementById("addsensor3").style.display = "none";
+             document.getElementById("sensorid3").innerHTML = table4[f+2].sensor_id;
+             
+                client.subscribe(document.getElementById("sensorid3").innerHTML);
+                var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid3").innerHTML;
+                client.send(message);
+                 }
+             
+             
+         }
+            
+            if(f+3 < table4.length)
+         {
+             document.getElementById("sno4").innerHTML = f+4;
+             document.getElementById("deviceid4").innerHTML = table4[f+3].id;
+               if(table4[f+3].sensor_id != "")
+                 {
+                document.getElementById("addsensor4").style.display = "none";
+             document.getElementById("sensorid4").innerHTML = table4[f+3].sensor_id; 
+             
+                client.subscribe(document.getElementById("sensorid4").innerHTML);
+                var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid4").innerHTML;
+                client.send(message);
+                 }
+             
+             
+         }
+            if(f+4 < table4.length)
+         {
+             document.getElementById("sno5").innerHTML = f+5;
+            document.getElementById("deviceid5").innerHTML = table4[f+4].id;
+               if(table4[f+4].sensor_id != "")
+                 {
+            document.getElementById("addsensor5").style.display = "none";         
+             document.getElementById("sensorid5").innerHTML = table4[f+4].sensor_id; 
+             
+                client.subscribe(document.getElementById("sensorid5").innerHTML);
+                var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid5").innerHTML;
+                client.send(message);
+                 }
+            
+             
+         }
+            
+            
+            document.getElementById("loading0").style.display = "none";
+            
+       
+            if(document.getElementById("deviceid1").innerHTML != "****")
+            {
+            
+                client.subscribe(document.getElementById("deviceid1").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid1").innerHTML;
+                client.send(message);
+                
+            }
+        
+        if(document.getElementById("deviceid2").innerHTML != "****")
+            {
+                //alert(document.getElementById("deviceid2").innerHTML);
+                 client.subscribe(document.getElementById("deviceid2").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid2").innerHTML;
+                client.send(message);
+                
+            }
+        
+        if(document.getElementById("deviceid3").innerHTML != "****")
+            {
+                 client.subscribe(document.getElementById("deviceid3").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid3").innerHTML;
+                client.send(message);
+                
+            }
+        if(document.getElementById("deviceid4").innerHTML != "****")
+            {
+                 client.subscribe(document.getElementById("deviceid4").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid4").innerHTML;
+                client.send(message);
+               
+            }
+        if(document.getElementById("deviceid5").innerHTML != "****")
+            {
+                 client.subscribe(document.getElementById("deviceid5").innerHTML);
+                var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid5").innerHTML;
+                client.send(message);
+            }
+            
+            
+            
+            
+                           var d = new Date();
+                 var year = d.getFullYear();
+                var month = d.getMonth();
+        
+                for(q = 0; q <= month; q += 1)
+                    
+                    {  
+                        var addmonth = q+1;
+                        var tempmonth;
+                        if(addmonth < 10)
+                            {
+                               tempmonth = String("0")+String(addmonth) 
+                            }
+                        
+                        else{
+                            tempmonth = addmonth
+                        }
+                        monthdata1.push(tempmonth);
+                        monthdata0.push(tempmonth);
+                        monthdata2.push(0);
+                        monthdata3.push(0);
+                    }
+                
+                for(y = 0; y < monthdata1.length; y+= 1)
+                    {
+                        if(String(monthdata1[y]) == "01")
+                            {
+                                monthdata0[y] = "Jan"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "02")
+                            {
+                                monthdata0[y] = "Feb"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "03")
+                            {
+                                monthdata0[y] = "Mar"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "04")
+                            {
+                                monthdata0[y] = "Apr"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "05")
+                            {
+                                monthdata0[y] = "May"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "06")
+                            {
+                                monthdata0[y] = "Jun"
+                            }
+                        else if(String(monthdata1[y]) == "07")
+                            {
+                                monthdata0[y] = "Jul"
+                            }
+                        else if(String(monthdata1[y]) == "08")
+                            {
+                                monthdata0[y] = "Aug"
+                            }
+                        else if(String(monthdata1[y]) == "09")
+                            {
+                                monthdata0[y] = "Sep"
+                            }
+                        else if(String(monthdata1[y]) == "10")
+                            {
+                                monthdata0[y] = "Oct"
+                            }
+                        else if(String(monthdata1[y]) == "11")
+                            {
+                                monthdata0[y] = "Nov"
+                            }
+                        else if(String(monthdata1[y]) == "12")
+                            {
+                                monthdata0[y] = "Dec"
+                            }
+                        
+                        
+                    }
+            
+            
+            if(table4.length == 0)
+                {
+                    
+                  document.getElementById("loading1").style.display = "none";
+                    swal({
+  title: "No device!",
+  text: "No device added to this account. Add devices now",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+      window.location.href = "index.html";
+    
+  } else {
+   
+  }
+});
+                    
+                }
+            
+             var totruntime = 0;
+           var totenergy = 0;
+          
+        
+                
+                for (i = 0; i < table4.length; i ++) 
+                {    
+                    
+                  
+                arr.push(table4[i].id);    
+                     
+               var runtime = 0;
+                var energy = 0;    
+                
+                    
+                    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/fetch_energy_ind.php?id="+table4[i].id,false);
+    xmlhttp.send();
+
+    var data1 = xmlhttp.responseText;
+                    
+                 //   alert(data1);
+           
+     var table1 = JSON.parse(data1);
+                    
+                    for (var h = 0; h < table1.length; h +=1)   
+                           
+                { 
+                    
+                   // alert(table2[h].runtime);
+                     runtime = parseFloat(runtime)+parseFloat(table1[h].runtime);
+                     energy = parseFloat(energy)+parseFloat(table1[h].energy);
+                    
+                    var dates = table1[h].dates;
+                    var splits = dates.split("-");
+                    //alert(splits[1])
+                    
+                   // alert(monthdata1.indexOf(splits[1]));
+                   //alert(splits[1]);
+                    
+                    
+                    
+                    monthdata2[monthdata1.indexOf(splits[1])] = parseFloat(parseFloat(monthdata2[monthdata1.indexOf(splits[1])]) + parseFloat(table1[h].energy)).toFixed(2);
+                    monthdata3[monthdata1.indexOf(splits[1])] = parseFloat(parseFloat(monthdata2[monthdata1.indexOf(splits[1])]) + parseFloat((parseFloat(table1[h].energy)).toFixed(2))*6.09).toFixed(2);
+                    
+                        
+                    
+                            
+                        
+                    
+                    
+                    
+                }
+     
+            
+            
+  totenergy = totenergy + energy;
+  totruntime = totruntime +runtime;                    
+            
+              
+            
+        }
+            //totgraphcons
+                document.getElementById("totgraphcons").innerHTML = (totenergy).toFixed(2) + " Kwh";
+                document.getElementById("totgraphcost").innerHTML = (parseFloat(totenergy*6.09)).toFixed(2) + " INR";
+                    
+                    var temptotruntime = secondsToHms(totruntime);
+                    document.getElementById("totgraphruntime").innerHTML = temptotruntime;
+            
+            document.getElementById("totcons").innerHTML = (totenergy).toFixed(2);
+             document.getElementById("totcost").innerHTML = (parseFloat(totenergy*6.09)).toFixed(2);
+            
+            
+             var speedCanvas = document.getElementById("speedChart");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: monthdata0,
+  datasets: [{
+    yAxisID: 'A',
+    label: "Energy (KWh)",
+    data: monthdata2,
+      borderColor: 'rgb(127,96,250)',
+      backgroundColor: 'rgb(127,96,250,0.1)',
+  }
+            ,
+             
+             {
+    yAxisID: 'B',
+    label: "Cost (INR)",
+    data: monthdata3,
+      borderColor: 'rgb(252,92,137)',
+      backgroundColor: 'rgb(252,92,137,0.1)',
+  }
+            
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+      }, {
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+      
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+            
+        document.getElementById("loading1").style.display = "none";
+            
+            document.getElementById("totoffline").innerHTML = arr.length;
+                 var data1_value = 0;
+            var data2_value = 0;
+                    var data3_value = 0;
+                    var data4_value = 0;
+            
+              for (i = 0; i < table4.length; i ++) 
+                { 
+                    
+                    
+               
+                
+                    if(table4[i].sensor_id != "")
+                    {
+                    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/fetch_sensor_ind.php?id="+table4[i].sensor_id,false);
+    xmlhttp.send();
+
+    var data1 = xmlhttp.responseText;  
+                       // alert(data1);
+     var table1 = JSON.parse(data1);
+                        
+                        
+                              for (var h = 0; h < table1.length; h +=1)   
+                           
+                { 
+                    
+                   // alert(table2[h].runtime);
+                     data1_value = parseFloat(data1_value)+parseFloat(table1[h].data1);
+                     data2_value = parseFloat(data2_value)+parseFloat(table1[h].data2);
+                     data3_value = parseFloat(data2_value)+parseFloat(table1[h].data3);
+                     data4_value = parseFloat(data2_value)+parseFloat(table1[h].data4);
+                    
+                }
+                        
+                        
+                    
+                }
+                    
+                }
+            
+        
+            
+            document.getElementById("avg_data1").innerHTML = parseFloat(data1_value/table1.length).toFixed(2)+" ppm";
+            document.getElementById("avg_data2").innerHTML = parseFloat(data2_value/table1.length).toFixed(2)+" ug/m3";
+            document.getElementById("avg_data3").innerHTML = parseFloat(data3_value/table1.length).toFixed(2)+" *C";
+            document.getElementById("avg_data4").innerHTML = parseFloat(data4_value/table1.length).toFixed(2)+" Rh";
+            
+            
+            
+           //alert("arr");
+            
+           // alert(monthdata0);
+            //alert(monthdata1);
+            
+                            for (i = 0; i < table4.length; i ++) 
+                {    
+                    
+                                 xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/fetch_notifications.php?id="+table4[i].id+"&status=1",false);
+    xmlhttp.send();
+
+    var data1 = xmlhttp.responseText;
+                    
+                 //   alert(data1);
+           
+     var table5 = JSON.parse(data1);
+                    
+            if(data1.length > 3)
+                {
+                    
+                    for (var y = 0; y < table5.length; y +=1)   
+                           
+                {
+                    //alert(table5[y].alerts);
+                    
+                    var temp_text;
+                    var temp_device_id = table5[y].id;
+                    var temp_reference = table5[y].reference;
+
+                    if(table5[y].alerts == "1")
+                        {
+                        temp_text = "The device with id: " + table5[y].id+"running time has crossed the set threshold and filter replacement is required";
+                        }
+                    else if(table5[y].alerts == "2")
+                       {
+                         temp_text = "Further running of the device with id: "+ table5[y].id+", will damage the device and we strongly recommend replacement of the filter";  
+                           
+                       }
+                    
+                      else if(table5[y].alerts == "3")
+                       {
+                         temp_text = "The device with id: "+ table5[y].id+", has detected presence of smoke near or within the device.";  
+                           
+                       }
+                        
+                    swal({
+  title: "Are you sure?",
+  text: temp_text,
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+      
+      xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/update_alerts.php?id="+temp_device_id+"&reference="+temp_reference+"&status=0",false);
+    xmlhttp.send();
+
+   
+  } else {
+    
+  }
+});
+                    
+                    
+                }
+                    
+                    
+                
+                }
+                    
+                }
+            
+            
+            setInterval(getdata,3000);
+            
+        }
+        
+        function getdata()
+        {
+         //   alert("getdata");
+          if(document.getElementById("deviceid1").innerHTML != "****")
+            {
+            
+                //client.subscribe(document.getElementById("deviceid1").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get_smoke,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid1").innerHTML;
+                client.send(message);
+                
+            }
+        
+        if(document.getElementById("deviceid2").innerHTML != "****")
+            {
+                //alert(document.getElementById("deviceid2").innerHTML);
+                // client.subscribe(document.getElementById("deviceid2").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get_smoke,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid2").innerHTML;
+                client.send(message);
+                
+            }
+        
+        if(document.getElementById("deviceid3").innerHTML != "****")
+            {
+                 //client.subscribe(document.getElementById("deviceid3").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get_smoke,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid3").innerHTML;
+                client.send(message);
+                
+            }
+        if(document.getElementById("deviceid4").innerHTML != "****")
+            {
+                // client.subscribe(document.getElementById("deviceid4").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get_smoke,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid4").innerHTML;
+                client.send(message);
+               
+            }
+        if(document.getElementById("deviceid5").innerHTML != "****")
+            {
+                 //client.subscribe(document.getElementById("deviceid5").innerHTML);
+                var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get_smoke,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("deviceid5").innerHTML;
+                client.send(message);
+            }
+            
+            
+            if(document.getElementById("sensorid1").innerHTML != "****")
+            {
+            
+                //client.subscribe(document.getElementById("deviceid1").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid1").innerHTML;
+                client.send(message);
+                
+            }
+        
+        if(document.getElementById("sensorid2").innerHTML != "****")
+            {
+                //alert(document.getElementById("deviceid2").innerHTML);
+                // client.subscribe(document.getElementById("deviceid2").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid2").innerHTML;
+                client.send(message);
+                
+            }
+        
+        if(document.getElementById("sensorid3").innerHTML != "****")
+            {
+                 //client.subscribe(document.getElementById("deviceid3").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid3").innerHTML;
+                client.send(message);
+                
+            }
+        if(document.getElementById("sensorid4").innerHTML != "****")
+            {
+                // client.subscribe(document.getElementById("deviceid4").innerHTML);
+                 var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid4").innerHTML;
+                client.send(message);
+               
+            }
+        if(document.getElementById("sensorid5").innerHTML != "****")
+            {
+                 //client.subscribe(document.getElementById("deviceid5").innerHTML);
+                var ack_id = Math.floor(Math.random()*9000000) + 10;
+                var result = "get,"+ack_id;
+                message = new Paho.MQTT.Message(result);
+                message.destinationName = document.getElementById("sensorid5").innerHTML;
+                client.send(message);
+            }
+            
+        }
+        
+        function next()
+    {
+       //  alert(arraydata1);
+        f=f+5;
+        m1=parseInt(document.getElementById("page1").innerHTML)+1;
+        tableload();
+        document.getElementById("page1").innerHTML = m1;
+        
+        //alert("next")
+    }
+    
+    function prev()
+    {
+       // alert(f);
+        if(f > 4)
+            {
+        m1 = parseInt(document.getElementById("page1").innerHTML)-1;        
+        f = f-5;
+        tableload();
+         document.getElementById("page1").innerHTML = m1;        
+            }
+    }
+        
+   
+ 
+            
+  
+
+    
+        
+        function secondsToHms(d) {
+           // alert(d)
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " h, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " m, ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " s") : "";
+             
+    
+    //alert(hDisplay + mDisplay + sDisplay)
+    return hDisplay + mDisplay + sDisplay; 
+       }
+        
+        function logout()
+        {
+           // alert("logout")
+            localStorage.removeItem("login");
+            window.location.href="login.html";
+        }
+        
+        function modaladddevice()
+    {
+        //alert("test");
+        if(document.getElementById("adddeviceid").value != "")
+            {
+    var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/devices_insert.php?id="+document.getElementById("adddeviceid").value+"&email="+localStorage.getItem("email"),false);
+    xmlhttp.send();
+    location.reload();
+            }
+     
+    }
+     //    alert("jf");
+    </script>
+   
+    
+     <script async defer
+         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbYy-NXqUjrk0_ZXFK7hwYVvH-vTe29M4&callback=initMap"></script>
+    
+  
+    
+         <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    
+   
+    </div>
+     <div style="z-index: 500;height: 350vh;width: 100%;color: black;position: absolute;background: black;opacity: 0.6;display: none" id="mess_loading">
+        
+        <center>
+            
+            <div style="margin-top: 20%;color: white">
+            <div class="lds-roller2"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <br>
+            Please wait, this will take few seconds
+            
+            </div>
+        
+        
+        
+        </center>
+        </div>
+    
+     <script>
+    
+    function switchcontrol(device,node) {
+     //alert("check");
+        var tempdeviceid = "deviceid"+device;
+        var tempswitch = "switch"+device+node;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+    var checkBox = document.getElementById(tempswitch);
+      // alert(tempswitch);
+    //alert(localStorage.getItem(roomselect.concat(fav)));
+      var str1 = "change,"+ack_id+",n"+node;
+      if (checkBox.checked == true){
+         // alert("checked");
+           var result = str1.concat("1");
+          message = new Paho.MQTT.Message(result);
+          message.destinationName = document.getElementById(tempdeviceid).innerHTML;
+    client.send(message);
+     } else {
+              var result = str1.concat("0");
+          message = new Paho.MQTT.Message(result);
+    message.destinationName = document.getElementById(tempdeviceid).innerHTML;
+    client.send(message);
+       // alert(result);
+    }
+        
+     // alert("done"); 
+}
+    
+    var adjustselect;
+    var sensorselect;
+    var autoselect;
+    var sensor_device_id; 
+   var deviceselect;         
+    
+    function adjust(number)
+    {
+        adjustselect = number
+        
+    }
+   
+    
+    function setspeed()
+    {
+        //alert("setspeed")
+        
+        var tempvalue = document.getElementById("speed_slider").value;
+       // alert(setspeed);
+        //alert(adjustselect);
+        var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "adj,"+ack_id+","+tempvalue;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = document.getElementById(tempdeviceid).innerHTML;
+        client.send(message);
+    }
+    
+    function modaladdsensor()
+    {
+      //alert(document.getElementById("addsensorid").value); 
+        //sensormodalid
+        var xmlhttp=new XMLHttpRequest();
+        xmlhttp.open("GET","http://localhost/whizly_air_purifier/api/sensor_insert.php?sensor_id="+document.getElementById("addsensorid").value+"&id="+sensor_device_id,false);
+        xmlhttp.send();
+ 
+        location.reload();
+    }
+    
+    
+    
+    function addsensor(number)
+    {
+        
+        
+        //sensorselect = number;
+        //alert(sensorselect);
+        var temp_device_id = "deviceid"+number;
+        sensor_device_id = document.getElementById(temp_device_id).innerHTML;
+        document.getElementById("sensormodalid").innerHTML = sensor_device_id;
+        
+    }
+    
+    function knowmore(number)
+    {
+        var temp_deviceid = "deviceid"+number;
+        var temp_sensorid = "sensorid"+number;
+       // alert(document.getElementById(temp_deviceid).innerHTML);
+        localStorage.setItem("deviceid",document.getElementById(temp_deviceid).innerHTML);
+         localStorage.setItem("sensorid",document.getElementById(temp_sensorid).innerHTML);
+        window.location.href = "ind.html";
+        
+    }
+    
+    function auto_set(number)
+    {
+        var temp_sensorid = "sensorid"+number;
+        autoselect = document.getElementById(temp_sensorid).innerHTML;
+        var tempdeviceid = "deviceid"+number;
+        deviceselect = document.getElementById(tempdeviceid).innerHTML;
+        
+         var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "auto_get,"+ack_id;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = autoselect;
+        client.send(message);
+        
+       // alert(autoselect);
+        
+    }
+    
+    function automode()
+    {
+        
+        var status1;
+        if(document.getElementById("automode").checked == true)
+            {
+                status1 = "1";
+                
+            }
+        else
+        {
+        
+            status1 = "0";
+        
+        }
+        
+         var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "auto_set,"+ack_id+","+status1;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = autoselect;
+        client.send(message);
+        
+    }
+         
+         
+          function settings2_set1()
+    {
+        
+       var tempvalue = document.getElementById("settings2_input1").value;
+        
+        if(tempvalue != "")
+            {
+       // alert(setspeed);
+        //alert(deviceselect);
+       // var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_filtertime1,"+ack_id+","+tempvalue;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            }
+        else{
+            document.getElementById("settings2_error").style.display = "block";
+            
+        }
+        
+    }
+    
+    function settings2_set2()
+    {
+        
+       var tempvalue = document.getElementById("settings2_input2").value;
+        
+        if(tempvalue != "")
+            {
+       // alert(setspeed);
+        //alert(deviceselect);
+       // var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_filtertime2,"+ack_id+","+tempvalue;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            }
+        else{
+            document.getElementById("settings2_error").style.display = "block";
+            
+        }
+        
+    }
+    
+    function settings3_set()
+    {
+        
+       var tempvalue = document.getElementById("settings3_input").value;
+        
+        if(tempvalue != "")
+            {
+       // alert(setspeed);
+        //alert(deviceselect);
+       // var tempdeviceid = "deviceid"+ adjustselect;
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_filtertime2,"+ack_id+","+tempvalue;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            }
+        else{
+            document.getElementById("settings3_error").style.display = "block";
+            
+        }
+        
+    }
+    
+    function settings2_button()
+    {
+        var temp_status = "0";
+        if(document.getElementById("settings2_button").checked == true)
+            {
+              temp_status = "1";
+                
+            }
+        
+ 
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_filtercutoff,"+ack_id+","+temp_status;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+        
+    }
+    
+        function settings3_button()
+    {
+        var temp_status = "0";
+        if(document.getElementById("settings3_button").checked == true)
+            {
+              temp_status = "1";
+                
+            }
+        
+      
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "set_smokecutoff,"+ack_id+","+temp_status;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+        
+    }
+    
+    
+    
+    function settings(number)
+    {
+        if(number == "1")
+            
+            {
+                document.getElementById("settings_div2").style.display = "none";
+                document.getElementById("settings_div3").style.display = "none";
+                document.getElementById("settings_div1").style.display = "block";
+                
+                document.getElementById("settings_button2").style.background = "none";
+                document.getElementById("settings_button3").style.background = "none";
+                document.getElementById("settings_button1").style.background = "grey";
+                
+            }
+        
+        else if(number == "2")
+            
+            {
+                document.getElementById("settings_div1").style.display = "none";
+                document.getElementById("settings_div3").style.display = "none";
+                document.getElementById("settings_div2").style.display = "block";
+                
+                document.getElementById("settings_button1").style.background = "none";
+                document.getElementById("settings_button3").style.background = "none";
+                document.getElementById("settings_button2").style.background = "grey";
+                
+
+   
+        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "get_filter,"+ack_id;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            
+        
+    
+            }
+        
+         else if(number == "3")
+            
+            {
+                document.getElementById("settings_div2").style.display = "none";
+                document.getElementById("settings_div1").style.display = "none";
+                document.getElementById("settings_div3").style.display = "block";
+                      
+                document.getElementById("settings_button1").style.background = "none";
+                document.getElementById("settings_button2").style.background = "none";
+                document.getElementById("settings_button3").style.background = "grey";
+                
+                        var ack_id = Math.floor(Math.random()*9000000) + 10;
+        var result = "get_smokedata,"+ack_id;
+         message = new Paho.MQTT.Message(result);
+        message.destinationName = deviceselect;
+        client.send(message); 
+            }
+        
+        
+    }
+         
+         function mydevices()
+         {
+             
+             window.location.href = "device_list.html"
+             
+         }
+    
+    </script>
+
 </body>
 
 </html>

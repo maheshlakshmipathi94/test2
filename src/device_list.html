@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Pneoterik - Smart air purifier</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <!-- Custom Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<style>
+    
+    </style>
+</head>
+
+<body onload="initialise()">
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header" style="height: 10%">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <b class="logo-abbr"><img src="images/logo.png" alt=""> </b>
+                    <span class="logo-compact"><img src="./images/logo-compact.png" alt=""></span>
+                    <span class="brand-title">
+                        <img src="images/login-logo.png" alt="" height="85px" width="160px">
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+
+            <div class="container-fluid">
+                <div class="row">
+    
+                    <!-- /# column -->
+                    <div class="col-lg-12">
+                        <button type="button" class="btn mb-1 btn-primary" data-toggle="modal" data-target="#modaldevices">Add device<span class="btn-icon-right"><i class="fa fa-plus-square"></i></span>
+                                    </button>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <h4 style="float: left">Total Devices</h4>
+                                    <h4 style="float: right" id="totdevices">00</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Added on</th>
+                                                <th>ID</th>
+                                                <th>Meter ID</th>
+                                                <th>Location</th>
+                                                <th>Status</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr id="devicerow1" style="display: none">
+                                                <th id="devicesno1">****</th>
+                                                <th id="devicedates1">****</th>
+                                                
+                                                <td id="deviceid1" >****</td>
+                                                <td id="devicemeter1">****</td>
+                                                <td id="devicelocation1">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus1">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('1')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr id="devicerow2" style="display: none">
+                                                <th id="devicesno2">****</th>
+                                                 <th id="devicedates2">****</th>
+                                                
+                                                <td id="deviceid2" >****</td>
+                                                <td id="devicemeter2">****</td>
+                                                <td id="devicelocation2">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus2">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('2')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+                                             <tr id="devicerow3" style="display: none">
+                                                <th id="devicesno3">****</th>
+                                                  <th id="devicedates3">****</th>
+                                                 
+                                                <td id="deviceid3" >****</td>                                                
+                                                <td id="devicemeter3">****</td>
+                                                <td id="devicelocation3">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus3">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('3')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+                                            
+                                             <tr id="devicerow4" style="display: none">
+                                                <th id="devicesno4">****</th>
+                                                  <th id="devicedates4">****</th>
+                                                <td id="deviceid4" >****</td>
+                                                
+                                                <td id="devicemeter4">****</td>
+                                                <td id="devicelocation4">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus4">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('4')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+                                             <tr id="devicerow5" style="display: none">
+                                                <th id="devicesno5">****</th>
+                                                  <th id="devicedates5">****</th>
+                                                <td id="deviceid5" >****</td>
+                                                
+                                                <td id="devicemeter5">****</td>
+                                                <td id="devicelocation5">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus5">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('5')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+                                             <tr id="devicerow6" style="display: none">
+                                                <th id="devicesno6">****</th>
+                                                  <th id="devicedates6">****</th>
+                                                <td id="deviceid6" >****</td>
+                                                
+                                                <td id="devicemeter6">****</td>
+                                                <td id="devicelocation6">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus7">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('6')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+                                             <tr id="devicerow7" style="display: none">
+                                                <th id="devicesno7">****</th>
+                                                  <th id="devicedates7">****</th>
+                                                <td id="deviceid7" >****</td>
+                                                <td id="devicemeter7">****</td>
+                                                <td id="devicelocation7">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus7">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('7')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+                                             <tr id="devicerow8" style="display: none">
+                                                <th id="devicesno8">****</th>
+                                                  <th id="devicedates8">****</th>
+                                                <td id="deviceid8" >****</td>
+                                                
+                                                <td id="devicemeter8">****</td>
+                                                <td id="devicelocation8">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus8">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('8')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+                                             <tr id="devicerow9" style="display: none">
+                                                <th id="devicesno9">****</th>
+                                                  <th id="devicedates9">****</th>
+                                                <td id="deviceid9" >****</td>
+                                                
+                                                <td id="devicemeter9">****</td>
+                                                <td id="devicelocation9">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus9">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('9')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+                                             <tr id="devicerow10" style="display: none">
+                                                <th id="devicesno10">****</th>
+                                                  <th id="devicedates10">****</th>
+                                                <td id="deviceid10" >****</td>
+                                                
+                                                <td id="devicemeter10">****</td>
+                                                <td id="devicelocation10">****</td>
+                                                <td><span class="badge badge-success px-2" id="devicestatus10">Online</span>
+                                                </td>
+                                                <td><a href="#" data-toggle="tooltip" data-placement="top" title="delete" onclick="deletes('10')"><i class="fa fa-remove color-danger"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+                                            
+                                            
+                                            
+                                        </tbody>
+                                    </table>
+                                    
+                                     <center>
+                                   
+                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" style="float: left" onclick="prev()">Prev</button>
+                                    
+                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" style="float: right" onclick="next()">Next</button>
+                                         <div style="float: clear;margin: auto" id="page1">1</div>
+                                    </center>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /# column -->
+                   
+                    <!-- /# column -->
+      
+             
+                </div>
+            </div>
+            <!-- #/ container -->
+        </div>
+        
+         
+             
+        
+        
+                               <div class="modal fade" id="modalsensors">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Add new sensor</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                               
+                                                    
+                                                    
+                                                  
+                                                      <h5 style="padding-top: 5px">Device  ID:<span id="sensormodalid"></span></h5>                                            
+                                                       <h5 style="padding-top: 5px">Sensor ID</h5>
+                                                     <input type="text" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter sensor ID" id="addsensorid">
+                                                    
+                                                  
+                                                     
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" onclick="modaladdsensor()">Add sensor</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        
+                                    <div class="modal fade" id="modaldevices">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Add new device</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                               
+                                                    
+                                                    
+                                                  
+                                                    <h5 style="padding-top: 5px">Device ID</h5>
+                                                     <input type="text" style="border: none;border-bottom: 1px solid blue;width: 80%;padding: 5px" placeholder="Enter device ID" id="adddeviceid">
+                                                                                                
+                                                  
+                                                     
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary" onclick="modaladddevice()">Add device</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+               <p>Copyright &copy; Designed & Developed by <a href="https://meshling.com">Aioty labs</a> 2021</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="plugins/common/common.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/gleek.js"></script>
+    <script src="js/styleSwitcher.js"></script>
+    
+<script>
+    
+    var f= 0;
+    var t = 0;
+    var m1=1;
+    var arraydata1 = []; //hubs
+    var arraydata2 = []; // light id
+    var arraydata3 = []; //light count
+    
+    
+    function initialise()
+    {
+        
+        document.getElementById("devicerow1").style.display = "none";
+        document.getElementById("devicerow2").style.display = "none";
+        document.getElementById("devicerow3").style.display = "none";
+        document.getElementById("devicerow4").style.display = "none";
+        document.getElementById("devicerow5").style.display = "none";
+        document.getElementById("devicerow6").style.display = "none";
+        document.getElementById("devicerow7").style.display = "none";
+        document.getElementById("devicerow8").style.display = "none";
+        document.getElementById("devicerow9").style.display = "none";
+        document.getElementById("devicerow10").style.display = "none";
+        
+   var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/meshling_water_meter/api/fetch_devices.php?email="+localStorage.getItem("email"),false);
+    xmlhttp.send();
+
+    var data = xmlhttp.responseText;
+           
+     var table = JSON.parse(data);
+        
+                     
+        
+        //alert(data);
+    
+        document.getElementById("totmeters").innerHTML = table.length;
+        
+              
+       
+        
+                if(f < table.length)
+         {
+             
+             document.getElementById("devicerow1").style.display = "table-row";
+              document.getElementById("devicesno1").innerHTML = f+1;
+             document.getElementById("devicedates1").innerHTML = table[f].dates;
+             document.getElementById("deviceid1").innerHTML = table[f].device_id;
+             document.getElementById("devicelocation1").innerHTML = table[f].location;
+             document.getElementById("devicemeter1").innerHTML = table[f].meter_id;
+             
+         
+             
+             
+             
+             
+         }
+        
+         if(f+1 < table.length)
+         {
+             
+             document.getElementById("devicerow2").style.display = "table-row";
+              document.getElementById("devicesno2").innerHTML = f+2;
+             document.getElementById("devicedates2").innerHTML = table[f+1].dates;
+             document.getElementById("deviceid2").innerHTML = table[f+1].device_id;
+             document.getElementById("devicelocation2").innerHTML = table[f+1].location;
+             document.getElementById("devicemeter2").innerHTML = table[f+1].meter_id;
+             
+           
+         }
+        
+        if(f+2 < table.length)
+         {
+             
+             document.getElementById("devicerow3").style.display = "table-row";
+              document.getElementById("devicesno3").innerHTML = f+3;
+             document.getElementById("devicedates3").innerHTML = table[f+2].dates;
+             document.getElementById("deviceid3").innerHTML = table[f+2].device_id;
+             document.getElementById("devicelocation3").innerHTML = table[f+2].location;
+             document.getElementById("devicemeter3").innerHTML = table[f+2].meter_id;
+              
+             
+         }
+        
+        if(f+3 < table.length)
+         {
+             
+             document.getElementById("devicerow4").style.display = "table-row";
+              document.getElementById("devicesno4").innerHTML = f+4;
+             document.getElementById("devicedates4").innerHTML = table[f+3].dates;
+             document.getElementById("deviceid4").innerHTML = table[f+3].device_id;
+             document.getElementById("devicelocation4").innerHTML = table[f+3].location;
+             document.getElementById("devicemeter4").innerHTML = table[f+3].meter_id;
+                 
+             
+             
+             
+         }
+        
+        if(f+4 < table.length)
+         {
+             
+             document.getElementById("devicerow5").style.display = "table-row";
+              document.getElementById("devicesno5").innerHTML = f+5;
+             document.getElementById("devicedates5").innerHTML = table[f+4].dates;
+             document.getElementById("deviceid5").innerHTML = table[f+4].device_id;
+             document.getElementById("devicelocation5").innerHTML = table[f+4].location;
+             document.getElementById("devicemeter5").innerHTML = table[f+4].meter_id;
+             
+         
+             
+             
+             
+             
+         }
+        
+        if(f+5 < table.length)
+         {
+             
+             document.getElementById("devicerow6").style.display = "table-row";
+              document.getElementById("devicesno6").innerHTML = f+6;
+             document.getElementById("devicedates6").innerHTML = table[f+5].dates;
+             document.getElementById("deviceid6").innerHTML = table[f+5].device_id;
+             document.getElementById("devicelocation6").innerHTML = table[f+5].location;
+             document.getElementById("devicemeter6").innerHTML = table[f+5].meter_id;
+             
+                  
+             
+             
+         }
+        
+        if(f+6 < table.length)
+         {
+             
+             document.getElementById("devicerow7").style.display = "table-row";
+              document.getElementById("devicesno7").innerHTML = f+7;
+             document.getElementById("devicedates7").innerHTML = table[f+6].dates;
+             document.getElementById("deviceid7").innerHTML = table[f+6].device_id;
+             document.getElementById("devicelocation7").innerHTML = table[f+6].location;
+             document.getElementById("devicemeter7").innerHTML = table[f+6].meter_id;
+             
+              
+             
+         }
+        
+        if(f+7 < table.length)
+         {
+             
+             document.getElementById("devicerow8").style.display = "table-row";
+              document.getElementById("devicesno8").innerHTML = f+8;
+             document.getElementById("devicedates8").innerHTML = table[f+7].dates;
+             document.getElementById("deviceid8").innerHTML = table[f+7].device_id;
+             document.getElementById("devicelocation8").innerHTML = table[f+7].location;
+             document.getElementById("devicemeter8").innerHTML = table[f+7].meter_id;
+             
+         
+             
+             
+             
+             
+         }
+        
+        if(f+8 < table.length)
+         {
+             
+             document.getElementById("devicerow9").style.display = "table-row";
+              document.getElementById("devicesno9").innerHTML = f+9;
+             document.getElementById("devicedates9").innerHTML = table[f+8].dates;
+             document.getElementById("deviceid9").innerHTML = table[f+8].device_id;
+             document.getElementById("devicelocation9").innerHTML = table[f+8].location;
+             document.getElementById("devicemeter9").innerHTML = table[f+8].meter_id;
+             
+         
+             
+             
+             
+             
+         }
+        
+        if(f+9 < table.length)
+         {
+            
+             document.getElementById("devicerow10").style.display = "table-row";
+              document.getElementById("devicesno10").innerHTML = f+10;
+             document.getElementById("devicedates10").innerHTML = table[f+9].dates;
+             document.getElementById("deviceid10").innerHTML = table[f+9].device_id;
+             document.getElementById("devicelocation10").innerHTML = table[f+9].location;
+             document.getElementById("devicemeter10").innerHTML = table[f+9].meter_id;
+             
+         
+             
+             
+             
+             
+         }
+        
+         
+        
+        
+    }
+    
+    
+    
+    
+    
+    function adddevice()
+    {
+        
+        if(document.getElementById("adddeviceid").value != "" && document.getElementById("addmeterid").value != "" && document.getElementById("addlocation").value != "" )
+            {
+       var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/meshling_water_meter/api/devices_insert.php?email="+localStorage.getItem("email")+"&device_id="+document.getElementById("adddeviceid").value+"&meter_id="+document.getElementById("addmeterid").value+"&location="+document.getElementById("addlocation").value,false);
+              //alert("http://localhost/meshling_streetlight/api/devices_insert.php?email="+localStorage.getItem("email")+"&device_id="+document.getElementById("adddeviceid").value+"&meter_id="+document.getElementById("addmeterid").value+"&location="+document.getElementById("addlocation").value)
+    xmlhttp.send();
+        location.reload();
+            }
+        
+        else{
+            
+            document.getElementById("adderror").style.display = "block";
+        }
+        
+    }
+    
+    
+    
+    function deletes(number)
+    {
+       // alert("deletes")
+        var tempid = String("deviceid"+number);
+        
+        swal({
+  title: "Are you sure?",
+  text: "Once deleted, you will not be able to view any data related to this meter?",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/meshling_water_meter/api/device_delete.php?email="+localStorage.getItem("email")+"&device_id="+document.getElementById(tempid).innerHTML,false);
+      //alert("http://localhost/meshling_water_meter/api/delete_device.php?email="+localStorage.getItem("email")+"&device_id="+document.getElementById(tempid).innerHTML);
+    xmlhttp.send();
+        location.reload();
+  } else {
+    
+  }
+});
+        
+         
+        
+    }
+    
+    
+    
+    function next()
+    {
+        f=f+10;
+        m1=m1+1;
+        initialise();
+        document.getElementById("page1").innerHTML = m1;
+        
+        //alert("next")
+    }
+    
+    function prev()
+    {
+       // alert(f);
+        if(f > 9)
+            {
+        m1 = m1-1;        
+        f = f-10;
+        initialise();
+         document.getElementById("page1").innerHTML = m1;        
+            }
+    }
+    
+    
+    </script>
+    
+
+</body>
+
+</html>

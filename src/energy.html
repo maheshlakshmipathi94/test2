@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Quixlab - Bootstrap Admin Dashboard Template by Themefisher.com</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+    
+    <link href="css/spinner.css" rel="stylesheet">
+    <script src="js/mqtt.js"></script>
+    
+<style>
+      #map_modal {
+         height: 100%;
+         position: relative;
+         }
+    
+    .switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(25px);
+  -ms-transform: translateX(25px);
+  transform: translateX(25px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+    
+    
+    
+    </style>
+</head>
+
+<body onload="initialize()" style="height: 100%">
+    
+    <div style="position: relative;width: 100%;height: 100%">
+        
+        <div style="position: absolute;width: 100%;height: 100%;">
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    
+    
+    <div id="main-wrapper">
+        
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <b class="logo-abbr"><img src="images/logo.png" alt=""> </b>
+                    <span class="logo-compact"><img src="./images/logo-compact.png" alt=""></span>
+                    <span class="brand-title">
+                        <img src="images/logo-text.png" alt="">
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">    
+            <div class="header-content clearfix">
+                
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="toggle-icon"><i class="icon-menu"></i></span>
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <ul class="clearfix">
+                       
+                        <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
+                                <i class="mdi mdi-bell-outline"></i>
+                                <span class="badge badge-pill gradient-2">3</span>
+                            </a>
+                            <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">
+                                <div class="dropdown-content-heading d-flex justify-content-between">
+                                    <span class="">2 New Notifications</span>  
+                                    <a href="javascript:void()" class="d-inline-block">
+                                        <span class="badge badge-pill gradient-2">5</span>
+                                    </a>
+                                </div>
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Events near you</h6>
+                                                    <span class="notification-text">Within next 5 days</span> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Event Started</h6>
+                                                    <span class="notification-text">One hour ago</span> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Event Ended Successfully</h6>
+                                                    <span class="notification-text">One hour ago</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Events to Join</h6>
+                                                    <span class="notification-text">After two days</span> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </li>
+                      
+                        <li class="icons dropdown">
+                            <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
+                                <span class="activity active"></span>
+                                <img src="images/user/1.png" height="40" width="40" alt="">
+                            </div>
+                            <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="app-profile.html"><i class="icon-user"></i> <span>Profile</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <i class="icon-envelope-open"></i> <span>Add user</span> <div class="badge gradient-3 badge-pill gradient-1">3</div>
+                                            </a>
+                                        </li>
+                                        
+                                        <hr class="my-2">
+                                        
+                                        <li><a href="page-login.html"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="nk-sidebar">           
+            <div class="nk-nav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label">Dashboard</li>
+                    <li style="padding: 5px">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                        </a>
+                      
+                    </li>
+                    <li class="mega-menu mega-menu-sm" style="padding: 5px">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Devices</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./layout-blank.html">All devices</a></li>
+                            <li><a href="./layout-one-column.html">Offline devices</a></li>
+                            <li><a href="./layout-two-column.html">Online devices</a></li>
+                            <li><a href="./layout-compact-nav.html">Hub list</a></li>
+                            
+                            
+                            
+                            
+                        </ul>
+                    </li>
+                    
+                    <li style="padding: 5px">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">Groups</span>
+                        </a>
+                        
+                    </li>
+                    <li style="padding: 5px">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Energy Meter</span>
+                        </a>
+                       
+                    </li>
+                    <li style="padding: 5px">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-graph menu-icon"></i> <span class="nav-text">Notifications</span>
+                        </a>
+                       
+                    </li>
+                    
+                    <li style="padding: 5px">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-graph menu-icon"></i> <span class="nav-text">Settings</span>
+                        </a>
+                       
+                    </li>
+                   
+                   
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+ 
+        
+        <div class="content-body" >
+            
+            <center>
+            <div class="lds-ellipsis" id="loading"><div></div><div></div><div></div><div></div></div>
+            </center> 
+            <div class="container-fluid mt-3">
+            
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    
+                                    <div class="card-body pb-0 d-flex justify-content-between">
+                                        <div>
+                                            <h4 class="mb-1">Energy consumption</h4>
+                                     
+                                        </div>
+                                        <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 5px; border: 1px solid #ccc; width: 30%">
+                                        <i class="fa fa-calendar"></i>&nbsp;
+                                        <span></span> <i class="fa fa-caret-down"></i>
+                                        </div>
+                                    </div>
+                                    <div class="chart-wrapper">
+                                        <center>
+                                        <div class="lds-roller1" id="loading1" style="margin-top: 5%"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                        </center>
+                                        <canvas id="chart2" ></canvas>
+                                         <canvas id="speedChart" ></canvas>
+                                        
+                                        
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <div class="w-100 mr-2">
+                                                <h6>Energy Consumption</h6>
+                                                <h4 id="totenergy">00 KWh</h4>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-danger" style="width: 40%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 w-100">
+                                                <h6>Cost incured</h6>
+                                                <h4 id="totcost">00 INR</h4>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-primary" style="width: 80%"></div>
+                                                </div>
+                                            </div>
+                                            <div class="ml-2 w-100">
+                                                <h6>Run Time</h6>
+                                                <h4 id="totruntime">00h 00m 00s</h4>
+                                                <div class="progress" style="height: 6px">
+                                                    <div class="progress-bar bg-warning" style="width: 80%"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+
+
+ 
+
+
+
+
+            </div>
+            <!-- #/ container -->
+        </div>
+        
+                               
+        
+        
+           
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright &copy; Designed & Developed by <a href="https://themeforest.net/user/quixlab">Meshling pvt ltd</a> 2021</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="plugins/common/common.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/gleek.js"></script>
+    <script src="js/styleSwitcher.js"></script>
+
+    <!-- Chartjs -->
+    <script src="./plugins/chart.js/Chart.bundle.min.js"></script>
+    <!-- Circle progress -->
+    <script src="./plugins/circle-progress/circle-progress.min.js"></script>
+    <!-- Datamap -->
+    <script src="./plugins/d3v3/index.js"></script>
+    <script src="./plugins/topojson/topojson.min.js"></script>
+    <script src="./plugins/datamaps/datamaps.world.min.js"></script>
+    <!-- Morrisjs -->
+    <script src="./plugins/raphael/raphael.min.js"></script>
+    <script src="./plugins/morris/morris.min.js"></script>
+    <!-- Pignose Calender -->
+    <script src="./plugins/moment/moment.min.js"></script>
+    <script src="./plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+    <!-- ChartistJS -->
+    <script src="./plugins/chartist/js/chartist.min.js"></script>
+    <script src="./plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
+
+
+
+    <script src="./js/dashboard/dashboard-1.js"></script>
+    
+     <script async defer
+         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbYy-NXqUjrk0_ZXFK7hwYVvH-vTe29M4&callback=initMap"></script>
+<script>
+    
+   
+    
+   
+    
+    
+    
+    
+    </script>
+    
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <script type="text/javascript">
+        var device = localStorage.getItem("device");
+        var hub_id="";
+        var ack_id;
+        var graphdata0 = [];// temp time graph data
+        var graphdata1 = []; // day graph data
+        var graphdata2 = [];// day graph data energy
+        var graphdata3 = [];// day graph data cost
+        var graphdata4 = [];// day graph data time
+        var smallgraph1 = [];
+        var smallgraph2 = [];
+        
+        
+$(function() {
+
+    var start = moment().subtract(30, 'days');
+    var end = moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('YYYY/MM/DD') + ' -- ' + end.format('YYYY/MM/DD'));
+        datechange(start.format('YYYY/MM/DD'),end.format('YYYY/MM/DD'));
+    }
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+        ranges: {
+           'Today': [moment(), moment()],
+           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+           'This Month': [moment().startOf('month'), moment().endOf('month')],
+           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        }
+    }, cb);
+
+    cb(start, end);
+    
+    
+    
+
+});
+        
+        function datechange(data1,data2)
+        {
+            //alert(data1)
+            graphdata1 = [];
+            graphdata2 = [];
+            graphdata3 = [];
+            var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/meshling_streetlight/api/fetch_devices_ind_date.php?id="+device+"&from="+data1+"&to="+data2,false);
+    xmlhttp.send();
+
+         //   alert("http://localhost/meshling_streetlight/api/fetch_devices_ind_date.php?id="+device+"&from="+data1+"&to="+data2);
+    var data = xmlhttp.responseText;
+           
+     var table1 = JSON.parse(data);
+       //   alert(data);
+ 
+
+    var totruntime = 0;
+    var totenergy = 0;
+            
+            var splitsdata1 = data1.split("/");
+             var splitsdata2 = data2.split("/");
+        
+                //alert((parseInt(splitsdata2[1])-parseInt(splitsdata1[1])));
+            
+           // alert(data);
+             
+                            
+                           if(data1 == data2)
+                        {
+                            //alert("equal");
+                            for(y = 0; y <=24 ; y+=1)
+                                {
+                                    
+                                    
+                                   if(y <10 )
+                                       {
+                                           var j = "0"+y;
+                                           graphdata0.push(j);
+                                           
+                                           var b = j + ":00";
+                                           graphdata1.push(b);
+                                           
+                                       }
+                                    else{
+                                  //  alert(y);
+                                    var b = y + ":00";
+                                 graphdata0.push(String(y));
+                                 graphdata1.push(b);        
+                                    
+                                    }
+                                    
+                                    graphdata2.push("0");
+                                    graphdata3.push("0");
+                                    graphdata4.push("0");
+                                    
+                                }
+                           
+                           //   alert(graphdata0); 
+                            //alert(graphdata1); 
+                        }
+            
+                for (h = 0; h < table1.length; h +=1) 
+                {    
+                
+                    //alert(data);
+                    var tempdata = table1[h].dates;
+                    var tempsplitsdates = tempdata.split(" ");
+                   // var tempsplitsdates1 = tempsplitsdates[1].split(":")[0];
+                   // alert(data1);
+                    //alert(data2);
+                    var tempcost = parseFloat((table1[h].energy)*6.09).toFixed(2);
+                     totruntime = totruntime + parseInt(table1[h].runtime);
+                    totenergy = totenergy + parseInt(table1[h].energy);
+                    
+                    if(data1 == data2)
+                        {
+                            //alert("equal");
+                            //alert(graphdata0);
+                            //alert(tempsplitsdates1);
+                           //alert(graphdata0.indexOf("11"));
+                            //alert(graphdata2[graphdata0.indexOf(tempsplitsdates1)]);
+                            
+                             graphdata2[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(graphdata2[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])])+parseFloat(table1[h].energy)).toFixed(2);
+                            
+                             graphdata3[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])] = parseFloat(parseFloat(graphdata3[graphdata0.indexOf(tempsplitsdates[1].split(":")[0])])+parseFloat(tempcost)).toFixed(2);
+                            
+                           
+                            
+                          
+                        }
+                    
+                    else
+                    {
+                                            
+                    
+                    if((parseInt(splitsdata2[1])-parseInt(splitsdata1[1])) < 3)
+                    {
+                     var dates = table1[h].date;
+                    var splits = dates.split("-");
+                    //alert(splits[2]);
+                  //  alert(splits[1]);
+                   // alert(graphdata1.indexOf(table1[h].date));
+                    
+                    if(graphdata1.indexOf(table1[h].date) == -1)
+                        
+                        {
+                           // var tempsplits = splits[2]+"/"+splits[1];
+                            graphdata1.push(table1[h].date);
+                            graphdata2.push(table1[h].energy);
+                           // alert(table1[h].energy);
+                            //alert(tempcost);
+                            graphdata3.push(tempcost);
+                        }
+                    
+                    else
+                        {
+                            
+                            
+                            graphdata2[graphdata1.indexOf(table1[h].date)] = parseFloat(parseFloat(graphdata2[graphdata1.indexOf(table1[h].date)])+parseFloat(table1[h].energy)).toFixed(2);
+                           // alert(tempcost);
+                            
+                            graphdata3[graphdata1.indexOf(table1[h].date)] = parseFloat(parseFloat(graphdata3[graphdata1.indexOf(table1[h].date)])+parseFloat(tempcost)).toFixed(2);
+                            //alert(graphdata3);
+                            //alert("2ndloop");
+                        }
+                    
+                    }
+                    
+                    else{
+                        
+                        
+                        var dates = table1[h].date;
+                    var splits = dates.split("-");
+                    //alert(splits[2]);
+                  //  alert(splits[1]);
+                   // alert(graphdata1.indexOf(table1[h].date));
+                        var tempsplits;
+                        if(splits[1] == "01")
+                            {
+                               tempsplits = "Jan"; 
+                            }
+                       else if(splits[1] == "02")
+                            {
+                               tempsplits = "Feb"; 
+                            }
+                        
+                        else if(splits[1] == "03")
+                            {
+                               tempsplits = "Mar"; 
+                            }
+                        
+                        else if(splits[1] == "04")
+                            {
+                               tempsplits = "Apr"; 
+                            }
+                        
+                        else if(splits[1] == "05")
+                            {
+                               tempsplits = "May"; 
+                            }
+                        else if(splits[1] == "06")
+                            {
+                               tempsplits = "Jun"; 
+                            }
+                        else if(splits[1] == "07")
+                            {
+                               tempsplits = "Jul"; 
+                            }
+                        
+                        else if(splits[1] == "08")
+                            {
+                               tempsplits = "Aug"; 
+                            }
+                        
+                        else if(splits[1] == "09")
+                            {
+                               tempsplits = "Sep"; 
+                            }
+                        
+                        else if(splits[1] == "10")
+                            {
+                               tempsplits = "Oct"; 
+                            }
+                        
+                        else if(splits[1] == "11")
+                            {
+                               tempsplits = "Nov"; 
+                            }
+                        else if(splits[1] == "12")
+                            {
+                               tempsplits = "Dec"; 
+                            }
+                        tempsplits = tempsplits + "-" +splits[0];
+                    
+                    if(graphdata1.indexOf(tempsplits) == -1)
+                        
+                        {
+                           // var tempsplits = splits[2]+"/"+splits[1];
+                            graphdata1.push(tempsplits);
+                            graphdata2.push(table1[h].energy);
+                             graphdata3.push(tempcost);
+                        }
+                    
+                    else
+                        {
+                            
+                            graphdata2[graphdata1.indexOf(tempsplits)] = parseFloat(parseFloat(graphdata2[graphdata1.indexOf(tempsplits)])+parseFloat(table1[h].energy)).toFixed(2);
+                                graphdata2[graphdata1.indexOf(tempsplits)] = parseFloat(parseFloat(graphdata2[graphdata1.indexOf(tempsplits)])+parseFloat(tempcost)).toFixed(2);
+                        }
+                        
+                        
+                    }
+                    
+                    
+                }
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+                                                                                        
+                                                                                        
+                                                                                        
+//alert(graphdata1);
+           // alert(graphdata2);
+            //alert(graphdata3);
+            
+                       var speedCanvas = document.getElementById("speedChart");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: graphdata1,
+  datasets: [{
+    yAxisID: 'A',
+    label: "Energy (KWh)",
+    data: graphdata2,
+      borderColor: 'rgb(127,96,250)',
+      backgroundColor: 'rgb(127,96,250,0.1)',
+  }
+            ,
+             
+             {
+    yAxisID: 'B',
+    label: "Cost (INR)",
+    data: graphdata3,
+      borderColor: 'rgb(252,92,137)',
+      backgroundColor: 'rgb(252,92,137,0.1)',
+  }
+            
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+      }, {
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+      
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+            
+            
+            var speedCanvas6 = document.getElementById("chart2");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: graphdata1,
+  datasets: [{
+    yAxisID: 'A',
+    label: "Energy (KWh)",
+    data: graphdata2,
+      borderColor: 'rgb(127,96,250)',
+      backgroundColor: 'rgb(127,96,250,0.1)',
+  }
+            ,
+             
+             {
+    yAxisID: 'B',
+    label: "Cost (INR)",
+    data: graphdata3,
+      borderColor: 'rgb(252,92,137)',
+      backgroundColor: 'rgb(252,92,137,0.1)',
+  }
+            
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+      }, {
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+      
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+var lineChart = new Chart(speedCanvas6, {
+  type: 'bar',
+  data: speedData,
+  options: chartOptions
+});
+                            
+         
+                        
+               var temptotruntime = secondsToHms(totruntime);
+           // alert(temptotruntime);
+                document.getElementById("totruntime").innerHTML = temptotruntime;
+             //alert(totruntime)
+                            document.getElementById("totenergy").innerHTML = totenergy+"KWh";
+                            document.getElementById("totcost").innerHTML = parseFloat(totenergy*6.09).toFixed(2)+"INR";
+            document.getElementById("loading1").style.display = "none";
+    
+            
+        }
+        
+        
+    
+        
+        function secondsToHms(d) {
+           // alert(d)
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " h, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " m, ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " s") : "";
+             
+    
+    //alert(hDisplay + mDisplay + sDisplay)
+    return hDisplay + mDisplay + sDisplay; 
+       }
+        
+        function brightness()
+        
+        
+        {
+            
+            var xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/meshling_streetlight/api/fetch_devices_param_ind.php?id="+device,false);
+    xmlhttp.send();
+
+    var data = xmlhttp.responseText;
+           
+     var finaldata = JSON.parse(data);
+            
+            document.getElementById("brightness_slider").value = parseInt(finaldata[0].brightness);
+            if(finaldata[0].ad_brightness == "1")
+                {
+            document.getElementById("brightnesscontrol1").checked = true;
+                }
+            if(finaldata[0].sunset == "1")
+                
+                {
+                    
+                   document.getElementById("brightnesscontrol2").checked = true;  
+                    
+                }
+           // alert("done");
+            
+            
+            
+        }
+        
+       //localStorage.setItem("device","1234");
+</script>
+    
+    <script type="text/javascript">
+    
+     
+    client = new Paho.MQTT.Client("hairdresser.cloudmqtt.com", 35488, "web_" + parseInt(Math.random() * 100, 10));
+ 
+  // set callback handlers
+  client.onConnectionLost = onConnectionLost;
+  client.onMessageArrived = onMessageArrived;
+  var options = {
+     // alert("initialstarted");
+    useSSL: true,
+    userName: "pcxwoore",
+    password: "hhZmNsQrWfBW",
+    onSuccess:onConnect,
+    onFailure:doFail
+  }
+
+  // connect the client
+  client.connect(options);
+//alert("jhghjg");
+  // called when the client connects
+  function onConnect() {
+      
+    // Once a connection has been made, make a subscription and send a message.
+   
+    var message = new Paho.MQTT.Message("dashboard_Refreshed");
+    message.destinationName = hub_id;
+    client.send(message);
+
+
+      
+  }
+      
+     
+  function doFail(e){
+    console.log(e);
+      alert("no internet connection");
+  }
+
+  // called when the client loses its connection
+  function onConnectionLost(responseObject) {
+    if (responseObject.errorCode !== 0) {
+       //  alert("Mqtt Connection lost:"+responseObject.errorMessage);
+      console.log("onConnectionLost:"+responseObject.errorMessage);
+    }
+  }
+  
+   
+  function onMessageArrived(message) {
+      
+      //alert(totaldatarequest);
+      var rec = message.payloadString;
+      var splits = rec.split(",");
+      
+      if(splits[0] == "rec" && splits[1] == ack_id)
+          {
+              
+              
+          }
+      //alert(rec);
+      
+  }
+        
+        function checkbox(number)
+        {
+            ack_id = Math.floor(Math.random()*9000000) + 1000000;
+            
+            
+            if(document.getElementById("checkbox1").checked == true)
+                {
+                   // alert("switchon");
+                    var datasend = "send"+","+String(ack_id) +","+device+","+"1";
+                   var  message = new Paho.MQTT.Message(datasend);
+                   message.destinationName = hub_id;
+                   client.send(message);
+                }
+            else{
+               
+                       var datasend = "send"+","+String(ack_id) +","+device+","+"0";
+                   var  message = new Paho.MQTT.Message(datasend);
+                   message.destinationName = hub_id;
+                   client.send(message);
+                
+            }
+            
+           document.getElementById("mess_loading").style.display = "block";
+            setTimeout(loadingcheck,10000);
+            
+          //   $('#datamodal').modal('show');
+            
+        }
+        
+        function loadingcheck()
+        {
+            
+            if(document.getElementById("mess_loading").style.display == "block")
+                {
+                    swal({
+  title: "Error",
+  text: "Unable to communicate with the device. Try troublehooting",
+  icon: "error",
+  button: "close",
+});
+                    
+                    document.getElementById("mess_loading").style.display = "none";
+                   
+                }
+            
+            
+        }
+        
+        function setbrightness()
+        
+        {
+           if(document.getElementById("brightnesscontrol1").checked == true || document.getElementById("brightnesscontrol2").checked == true ) 
+               
+               
+               {
+                   
+                   swal({
+  title: "Are you sure?",
+  text: "The automatic brightness mode(Adapative brightness/sunset,sunrise) is turned on, by setting brightness manually the automatic brighntess modes will be switched off.",
+  icon: "warning",
+  buttons: true,
+  dangerMode: true,
+})
+.then((willDelete) => {
+  if (willDelete) {
+   document.getElementById("brightnesscontrol1").checked = false;
+      
+    document.getElementById("brightnesscontrol2").checked = false;  
+    //  document.getElementById("modalbrightness").style.zIndex = "1";
+            document.getElementById("mess_loading").style.display = "block";
+            setTimeout(loadingcheck,10000);
+      
+      
+      
+  } else {
+    
+  }
+});
+               }
+            
+            else{
+                
+               // document.getElementById("modalbrightness").style.zIndex = "1";
+            document.getElementById("mess_loading").style.display = "block";
+            setTimeout(loadingcheck,10000);
+            }
+            
+            
+            
+        }
+        
+        function schedulecontrol(number)
+        
+        {
+            
+            //alert(document.getElementById("scheduletime1").value);
+            
+ 
+            if(number == "1")
+                {
+                    if(document.getElementById("scheduletime1").value == "")
+                        {
+                          document.getElementById("schedulecontrol1").checked = false; 
+                             swal({
+  title: "Warning",
+  text: "Set time before turning on schedule feature",
+  icon: "warning",
+  button: "close",
+});
+                            
+                        }
+                    
+                    else
+                        
+                        {
+                            
+                            ///////send data
+                        }
+                    
+                    
+                }
+            
+         else if(number == "2")
+                {
+                    if(document.getElementById("scheduletime2").value == "")
+                        {
+                           document.getElementById("schedulecontrol2").checked = false; 
+                             swal({
+  title: "Warning",
+  text: "Set time before turning on schedule feature",
+  icon: "warning",
+  button: "close",
+});
+                            
+                        }
+                    
+                    else
+                        
+                        {
+                            
+                            ///////send data
+                        }
+                    
+                    
+                }
+            
+            else if(number == "3")
+                {
+                    if(document.getElementById("scheduletime3").value == "" || document.getElementById("scheduletime4").value == "" || document.getElementById("scheduletime5").value == "")
+                        {
+                           document.getElementById("schedulecontrol3").checked = false; 
+                             swal({
+  title: "Warning",
+  text: "Set time before turning on schedule feature",
+  icon: "warning",
+  button: "close",
+});
+                            
+                        }
+                    
+                    else
+                        
+                        {
+                            
+                            ///////send data
+                        }
+                    
+                    
+                }
+            
+            
+            
+        }
+ 
+ 
+ 
+        
+</script>
+            <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+   
+    
+        </div>
+    
+    <div style="z-index: 10;height: 200vh;width: 100%;color: black;position: absolute;background: black;opacity: 0.6;display: none" id="mess_loading">
+        
+        <center>
+            
+            <div style="margin-top: 20%;color: white">
+            <div class="lds-roller2"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <br>
+            Please wait, this will take few seconds
+            
+            </div>
+        
+        
+        
+        </center>
+        </div>
+    
+    </div>
+
+</body>
+
+</html>

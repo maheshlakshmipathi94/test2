@@ -1,0 +1,2223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Quixlab - Bootstrap Admin Dashboard Template by Themefisher.com</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/spinner.css">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <!-- Custom Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+<style>
+    
+     #map {
+         height: 100%;
+         position: relative;
+         }
+    
+    #map_modal {
+         height: 100%;
+         position: relative;
+         }
+    
+    .switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 2px;
+  bottom: 3px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(25px);
+  -ms-transform: translateX(25px);
+  transform: translateX(25px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+    
+    
+    
+
+    
+    </style>
+</head>
+
+<body onload="initialize()">
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="index.html">
+                    <b class="logo-abbr"><img src="images/logo.png" alt=""> </b>
+                    <span class="logo-compact"><img src="./images/logo-compact.png" alt=""></span>
+                    <span class="brand-title">
+                        <img src="images/logo-text.png" alt="">
+                    </span>
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">    
+            <div class="header-content clearfix">
+                
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="toggle-icon"><i class="icon-menu"></i></span>
+                    </div>
+                </div>
+                <div class="header-left">
+                    <div class="input-group icons">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+                        </div>
+                        <input type="search" class="form-control" placeholder="Search Dashboard" aria-label="Search Dashboard">
+                        <div class="drop-down animated flipInX d-md-none">
+                            <form action="#">
+                                <input type="text" class="form-control" placeholder="Search">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <ul class="clearfix">
+                        <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
+                                <i class="mdi mdi-email-outline"></i>
+                                <span class="badge badge-pill gradient-1">3</span>
+                            </a>
+                            <div class="drop-down animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-heading d-flex justify-content-between">
+                                    <span class="">3 New Messages</span>  
+                                    <a href="javascript:void()" class="d-inline-block">
+                                        <span class="badge badge-pill gradient-1">3</span>
+                                    </a>
+                                </div>
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li class="notification-unread">
+                                            <a href="javascript:void()">
+                                                <img class="float-left mr-3 avatar-img" src="images/avatar/1.jpg" alt="">
+                                                <div class="notification-content">
+                                                    <div class="notification-heading">Saiful Islam</div>
+                                                    <div class="notification-timestamp">08 Hours ago</div>
+                                                    <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="notification-unread">
+                                            <a href="javascript:void()">
+                                                <img class="float-left mr-3 avatar-img" src="images/avatar/2.jpg" alt="">
+                                                <div class="notification-content">
+                                                    <div class="notification-heading">Adam Smith</div>
+                                                    <div class="notification-timestamp">08 Hours ago</div>
+                                                    <div class="notification-text">Can you do me a favour?</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <img class="float-left mr-3 avatar-img" src="images/avatar/3.jpg" alt="">
+                                                <div class="notification-content">
+                                                    <div class="notification-heading">Barak Obama</div>
+                                                    <div class="notification-timestamp">08 Hours ago</div>
+                                                    <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <img class="float-left mr-3 avatar-img" src="images/avatar/4.jpg" alt="">
+                                                <div class="notification-content">
+                                                    <div class="notification-heading">Hilari Clinton</div>
+                                                    <div class="notification-timestamp">08 Hours ago</div>
+                                                    <div class="notification-text">Hello</div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </li>
+                        <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
+                                <i class="mdi mdi-bell-outline"></i>
+                                <span class="badge badge-pill gradient-2">3</span>
+                            </a>
+                            <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">
+                                <div class="dropdown-content-heading d-flex justify-content-between">
+                                    <span class="">2 New Notifications</span>  
+                                    <a href="javascript:void()" class="d-inline-block">
+                                        <span class="badge badge-pill gradient-2">5</span>
+                                    </a>
+                                </div>
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Events near you</h6>
+                                                    <span class="notification-text">Within next 5 days</span> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Event Started</h6>
+                                                    <span class="notification-text">One hour ago</span> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Event Ended Successfully</h6>
+                                                    <span class="notification-text">One hour ago</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
+                                                <div class="notification-content">
+                                                    <h6 class="notification-heading">Events to Join</h6>
+                                                    <span class="notification-text">After two days</span> 
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    
+                                </div>
+                            </div>
+                        </li>
+                        <li class="icons dropdown d-none d-md-flex">
+                            <a href="javascript:void(0)" class="log-user"  data-toggle="dropdown">
+                                <span>English</span>  <i class="fa fa-angle-down f-s-14" aria-hidden="true"></i>
+                            </a>
+                            <div class="drop-down dropdown-language animated fadeIn  dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li><a href="javascript:void()">English</a></li>
+                                        <li><a href="javascript:void()">Dutch</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="icons dropdown">
+                            <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
+                                <span class="activity active"></span>
+                                <img src="images/user/1.png" height="40" width="40" alt="">
+                            </div>
+                            <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="app-profile.html"><i class="icon-user"></i> <span>Profile</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void()">
+                                                <i class="icon-envelope-open"></i> <span>Inbox</span> <div class="badge gradient-3 badge-pill gradient-1">3</div>
+                                            </a>
+                                        </li>
+                                        
+                                        <hr class="my-2">
+                                        <li>
+                                            <a href="page-lock.html"><i class="icon-lock"></i> <span>Lock Screen</span></a>
+                                        </li>
+                                        <li><a href="page-login.html"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="nk-sidebar">           
+            <div class="nk-nav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li class="nav-label">Dashboard</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./index.html">Home 1</a></li>
+                            <!-- <li><a href="./index-2.html">Home 2</a></li> -->
+                        </ul>
+                    </li>
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Layouts</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./layout-blank.html">Blank</a></li>
+                            <li><a href="./layout-one-column.html">One Column</a></li>
+                            <li><a href="./layout-two-column.html">Two column</a></li>
+                            <li><a href="./layout-compact-nav.html">Compact Nav</a></li>
+                            <li><a href="./layout-vertical.html">Vertical</a></li>
+                            <li><a href="./layout-horizontal.html">Horizontal</a></li>
+                            <li><a href="./layout-boxed.html">Boxed</a></li>
+                            <li><a href="./layout-wide.html">Wide</a></li>
+                            
+                            
+                            <li><a href="./layout-fixed-header.html">Fixed Header</a></li>
+                            <li><a href="layout-fixed-sidebar.html">Fixed Sidebar</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">Apps</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">Email</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./email-inbox.html">Inbox</a></li>
+                            <li><a href="./email-read.html">Read</a></li>
+                            <li><a href="./email-compose.html">Compose</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Apps</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./app-profile.html">Profile</a></li>
+                            <li><a href="./app-calender.html">Calender</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-graph menu-icon"></i> <span class="nav-text">Charts</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./chart-flot.html">Flot</a></li>
+                            <li><a href="./chart-morris.html">Morris</a></li>
+                            <li><a href="./chart-chartjs.html">Chartjs</a></li>
+                            <li><a href="./chart-chartist.html">Chartist</a></li>
+                            <li><a href="./chart-sparkline.html">Sparkline</a></li>
+                            <li><a href="./chart-peity.html">Peity</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">UI Components</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-grid menu-icon"></i><span class="nav-text">UI Components</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./ui-accordion.html">Accordion</a></li>
+                            <li><a href="./ui-alert.html">Alert</a></li>
+                            <li><a href="./ui-badge.html">Badge</a></li>
+                            <li><a href="./ui-button.html">Button</a></li>
+                            <li><a href="./ui-button-group.html">Button Group</a></li>
+                            <li><a href="./ui-cards.html">Cards</a></li>
+                            <li><a href="./ui-carousel.html">Carousel</a></li>
+                            <li><a href="./ui-dropdown.html">Dropdown</a></li>
+                            <li><a href="./ui-list-group.html">List Group</a></li>
+                            <li><a href="./ui-media-object.html">Media Object</a></li>
+                            <li><a href="./ui-modal.html">Modal</a></li>
+                            <li><a href="./ui-pagination.html">Pagination</a></li>
+                            <li><a href="./ui-popover.html">Popover</a></li>
+                            <li><a href="./ui-progressbar.html">Progressbar</a></li>
+                            <li><a href="./ui-tab.html">Tab</a></li>
+                            <li><a href="./ui-typography.html">Typography</a></li>
+                        <!-- </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-layers menu-icon"></i><span class="nav-text">Components</span>
+                        </a>
+                        <ul aria-expanded="false"> -->
+                            <li><a href="./uc-nestedable.html">Nestedable</a></li>
+                            <li><a href="./uc-noui-slider.html">Noui Slider</a></li>
+                            <li><a href="./uc-sweetalert.html">Sweet Alert</a></li>
+                            <li><a href="./uc-toastr.html">Toastr</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="widgets.html" aria-expanded="false">
+                            <i class="icon-badge menu-icon"></i><span class="nav-text">Widget</span>
+                        </a>
+                    </li>
+                    <li class="nav-label">Forms</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-note menu-icon"></i><span class="nav-text">Forms</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./form-basic.html">Basic Form</a></li>
+                            <li><a href="./form-validation.html">Form Validation</a></li>
+                            <li><a href="./form-step.html">Step Form</a></li>
+                            <li><a href="./form-editor.html">Editor</a></li>
+                            <li><a href="./form-picker.html">Picker</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">Table</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-menu menu-icon"></i><span class="nav-text">Table</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./table-basic.html" aria-expanded="false">Basic Table</a></li>
+                            <li><a href="./table-datatable.html" aria-expanded="false">Data Table</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">Pages</li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-notebook menu-icon"></i><span class="nav-text">Pages</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./page-login.html">Login</a></li>
+                            <li><a href="./page-register.html">Register</a></li>
+                            <li><a href="./page-lock.html">Lock Screen</a></li>
+                            <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Error</a>
+                                <ul aria-expanded="false">
+                                    <li><a href="./page-error-404.html">Error 404</a></li>
+                                    <li><a href="./page-error-403.html">Error 403</a></li>
+                                    <li><a href="./page-error-400.html">Error 400</a></li>
+                                    <li><a href="./page-error-500.html">Error 500</a></li>
+                                    <li><a href="./page-error-503.html">Error 503</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+ 
+            <div class="container-fluid mt-3">
+                <center>
+                    
+                      <div class="lds-ellipsis" id="loading1"><div></div><div></div><div></div><div></div></div>
+                    </center>
+                <div class="row" style="display: none">
+                    
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-1">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total lights</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white" id="totlights">0</h2>
+                                    <p class="text-white mb-0">Total groups: <span id="totgroups">00</span></p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-lightbulb-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-2">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total Energy consumption</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white" ><span id="totenergy">00</span> KWh</h2>
+                                    <p class="text-white mb-0" ><span id="totcost">00</span> INR</p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-bar-chart"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-3">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Total Runtime</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white" id="totruntime">0000</h2>
+                                    <p class="text-white mb-0" id="since">since</p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-clock-o"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="card gradient-4">
+                            <div class="card-body">
+                                <h3 class="card-title text-white">Offline light</h3>
+                                <div class="d-inline-block">
+                                    <h2 class="text-white" id="offline_lights">0</h2>
+                                    <p class="text-white mb-0">Offline hubs: <span id="offline_hubs">00</span></p>
+                                </div>
+                                <span class="float-right display-5 opacity-5"><i class="fa fa-power-off"></i></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card" style="height: 500px">
+                                      <div id="map_canvas" class="col-md-12 col-sm-12 col-xs-12" style="height:500px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+                <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Energy consumption</h4>
+                                    <center>
+                                    <div class="lds-roller2" id="loading3"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                    </center>
+                                    <canvas id="speedChart" width="600" height="400"></canvas>
+                                </div>
+                            </div>
+                            
+                        </div>    
+                                       <div class="col-lg-3 col-md-6">
+                            <div class="card card-widget">
+                                <div class="card-body">
+                                    <h5 class="text-muted">Live status</h5>
+                                    <h2 class="mt-4" id="livelights">00</h2>
+                                    <span>Lights</span>
+                                    <div class="mt-4">
+                                        <h4 id="liveon">00</h4>
+                                        <h6>Switched on <span class="pull-right" id="liveon%">00%</span></h6>
+                                        <div class="progress mb-3" style="height: 7px">
+                                            <div class="progress-bar bg-success" style="width: 30%;" role="progressbar" id="liveonbar%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <h4 id="liveoff">00</h4>
+                                        <h6 class="m-t-10 text-muted">Switched off <span class="pull-right" id="liveoff%">00%</span></h6>
+                                        <div class="progress mb-3" style="height: 7px">
+                                            <div class="progress-bar bg-warning" style="width: 50%;" role="progressbar" id="liveoffbar%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <h4 id="liveoffline">00</h4>
+                                        <h6 class="m-t-10 text-muted">Offline Lights <span class="pull-right" id="liveoffline%">00%</span></h6>
+                                        <div class="progress mb-3" style="height: 7px">
+                                            <div class="progress-bar bg-danger" style="width: 20%;" role="progressbar" id="liveofflinebar%">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                               <div class="col-xl-3 col-lg-6 col-sm-6 col-xxl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Notifications</h4>
+                                <div id="activity">
+                                    <div class="media border-bottom-1 pt-3 pb-3">
+                                        <img width="35" src="./images/avatar/1.jpg" class="mr-3 rounded-circle">
+                                        <div class="media-body">
+                                            <h5>Received New Order</h5>
+                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
+                                        </div><span class="text-muted ">April 24, 2018</span>
+                                    </div>
+                                    <div class="media border-bottom-1 pt-3 pb-3">
+                                        <img width="35" src="./images/avatar/2.jpg" class="mr-3 rounded-circle">
+                                        <div class="media-body">
+                                            <h5>iPhone develered</h5>
+                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
+                                        </div><span class="text-muted ">April 24, 2018</span>
+                                    </div>
+                                    <div class="media border-bottom-1 pt-3 pb-3">
+                                        <img width="35" src="./images/avatar/2.jpg" class="mr-3 rounded-circle">
+                                        <div class="media-body">
+                                            <h5>3 Order Pending</h5>
+                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
+                                        </div><span class="text-muted ">April 24, 2018</span>
+                                    </div>
+                                    <div class="media border-bottom-1 pt-3 pb-3">
+                                        <img width="35" src="./images/avatar/2.jpg" class="mr-3 rounded-circle">
+                                        <div class="media-body">
+                                            <h5>Join new Manager</h5>
+                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
+                                        </div><span class="text-muted ">April 24, 2018</span>
+                                    </div>
+                                    <div class="media border-bottom-1 pt-3 pb-3">
+                                        <img width="35" src="./images/avatar/2.jpg" class="mr-3 rounded-circle">
+                                        <div class="media-body">
+                                            <h5>Branch open 5 min Late</h5>
+                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
+                                        </div><span class="text-muted ">April 24, 2018</span>
+                                    </div>
+                                    <div class="media border-bottom-1 pt-3 pb-3">
+                                        <img width="35" src="./images/avatar/2.jpg" class="mr-3 rounded-circle">
+                                        <div class="media-body">
+                                            <h5>New support ticket received</h5>
+                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
+                                        </div><span class="text-muted ">April 24, 2018</span>
+                                    </div>
+                                    <div class="media pt-3 pb-3">
+                                        <img width="35" src="./images/avatar/3.jpg" class="mr-3 rounded-circle">
+                                        <div class="media-body">
+                                            <h5>Facebook Post 30 Comments</h5>
+                                            <p class="mb-0">I shared this on my fb wall a few months back,</p>
+                                        </div><span class="text-muted ">April 24, 2018</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      
+                    </div>
+                
+                <div class="row">
+                    <div style="width: 100%;font-size: 20px;margin-bottom: 2%;margin-left: 2%">Groups
+                    
+                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" style="float: right;margin-right: 5%">Know more</button>
+                    </div>
+                   
+                    
+                    <div id="group-div-none" style="height: 250px;margin: auto;width: 100%">
+                                        <div class="col-12">
+                        <div class="card card-widget">
+                            <div class="card-body">
+                               <center>
+                                   <div class="lds-roller1" id="loading2"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                                <h5 class="text-muted">You don't have any groups added</h5>
+                                   <br>
+                                   <br>
+                                   <button type="button" class="btn mb-1 btn-primary">Add groups</button>
+                                </center>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>                     
+                    </div>
+                   
+                    <div id="group-div" style="display:none;margin: auto;width: 100%">
+                    
+                    <div class="col-4" id="group-div1" style="display: none;">
+                        <div class="card card-widget">
+                            <div class="card-body">
+                                <div>
+                                    <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="groupedit('1')">
+                                    <i class="fa fa-pencil gradient-4-text"></i> Edit
+                                    </button>
+                                    
+                                    <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="groupdelete('1')">
+                                   <i class="fa fa-times gradient-4-text"></i> Delete
+                                    </button>
+                                
+                                </div>
+                                <br>
+                                <br>
+                              
+                                <label class="switch" style="float: right">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                                </label>
+                                <h5 class="text-muted" id="groupname1">****</h5>
+
+                                <h2 class="mt-4"><span id="grouplights1">00</span> lights</h2>
+                              
+                                <span style="color: red">Offline lights : <span id="groupoffline1">00</span></span>
+                                <div class="mt-4">
+                                    <h4 ><span id="groupcost1">00</span> INR</h4>
+                                    <h6>Cost Incurred <span class="pull-right" id="groupcost%no1">0%</span></h6>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar gradient-1" style="width: 80%;" role="progressbar" id="groupcost%1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 ><span id="groupenergy1">00</span> KWh</h4>
+                                    <h6 class="m-t-10 text-muted">Energy consumption <span class="pull-right" id="groupenergy%no1">0%</span></h6>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar gradient-3" style="width: 50%;" role="progressbar" id="groupenergy%1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 id="groupruntime1">0h 0m 00s</h4>
+                                    <h6 class="m-t-10 text-muted">Runtime <span class="pull-right" id="groupruntime%no1">0%</span></h6>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar gradient-4" style="width: 35%;" role="progressbar" id="groupruntime%1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 bg-transparent">
+                                <div class="row">
+                                    <div class="col-4 border-right-1 pt-3" style="padding: 0px">
+                                        <a class="text-center d-block text-muted" onclick="groupbrightness('1')" data-toggle="modal" data-target="#modalbrightness" style="cursor: pointer">
+                                            <i class="fa fa-adjust gradient-1-text" aria-hidden="true"></i>
+                                            <p class="">Brightness</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 border-right-1 pt-3" style="padding: 0px"><a class="text-center d-block text-muted" onclick="groupschedule('1')" data-toggle="modal" data-target="#modalschedule" style="cursor: pointer">
+                                        <i class="fa fa-clock-o gradient-3-text"></i>
+                                            <p class="">Schedule</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 pt-3" style="padding: 0px"><a class="text-center d-block text-muted" onclick="grouptroubleshoot('1')" data-toggle="modal" data-target="#modaltroubleshoot" style="cursor: pointer">
+                                        <i class="fa fa-wrench gradient-4-text"></i>
+                                            <p class="">Troubleshoot</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                    
+                                    
+                            </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                        
+                        
+                        
+                                            
+                    <div class="col-4" id="group-div2" style="display: none;">
+                        <div class="card card-widget">
+                            <div class="card-body">
+                                <div>
+                                    <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="groupedit('2')">
+                                    <i class="fa fa-pencil gradient-4-text"></i> Edit
+                                    </button>
+                                    
+                                    <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="groupdelete('2')">
+                                   <i class="fa fa-times gradient-4-text"></i> Delete
+                                    </button>
+                                
+                                </div>
+                                <br>
+                                <br>
+                              
+                                <label class="switch" style="float: right">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                                </label>
+                                <h5 class="text-muted" id="groupname2">****</h5>
+
+                                <h2 class="mt-4"><span id="grouplights2">00</span> lights</h2>
+                              
+                                <span style="color: red">Offline lights : <span id="groupoffline2">00</span></span>
+                                <div class="mt-4">
+                                    <h4 ><span id="groupcost2">00</span> INR</h4>
+                                    <h6>Cost Incurred <span class="pull-right" id="groupcost%no2">0%</span></h6>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar gradient-1" style="width: 80%;" role="progressbar" id="groupcost%2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 ><span id="groupenergy2">00</span> KWh</h4>
+                                    <h6 class="m-t-10 text-muted">Energy consumption <span class="pull-right" id="groupenergy%no2">0%</span></h6>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar gradient-3" style="width: 50%;" role="progressbar" id="groupenergy%2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 id="groupruntime2">0h 0m 00s</h4>
+                                    <h6 class="m-t-10 text-muted">Runtime <span class="pull-right" id="groupruntime%no2">0%</span></h6>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar gradient-4" style="width: 35%;" role="progressbar" id="groupruntime%2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 bg-transparent">
+                                <div class="row">
+                                    <div class="col-4 border-right-1 pt-3" style="padding: 0px">
+                                        <a class="text-center d-block text-muted" onclick="groupbrightness('2')">
+                                            <i class="fa fa-adjust gradient-1-text" aria-hidden="true"></i>
+                                            <p class="">Brightness</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 border-right-1 pt-3" style="padding: 0px"><a class="text-center d-block text-muted" onclick="groupschedule('2')">
+                                        <i class="fa fa-clock-o gradient-3-text"></i>
+                                            <p class="">Schedule</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 pt-3" style="padding: 0px"><a class="text-center d-block text-muted" onclick="grouptroubleshoot('2')">
+                                        <i class="fa fa-wrench gradient-4-text"></i>
+                                            <p class="">Troubleshoot</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                    
+                                    
+                            </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                        
+                        
+                        
+                        
+                        
+                                            
+                    <div class="col-4" id="group-div3" style="display: none;">
+                        <div class="card card-widget">
+                            <div class="card-body">
+                                <div>
+                                    <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="groupedit('3')">
+                                    <i class="fa fa-pencil gradient-4-text"></i> Edit
+                                    </button>
+                                    
+                                    <button style="background: none;border: none;float: right;margin-right: 5%;cursor: pointer" onclick="groupdelete('3')">
+                                   <i class="fa fa-times gradient-4-text"></i> Delete
+                                    </button>
+                                
+                                </div>
+                                <br>
+                                <br>
+                              
+                                <label class="switch" style="float: right">
+                                <input type="checkbox">
+                                <span class="slider round"></span>
+                                </label>
+                                <h5 class="text-muted" id="groupname3">****</h5>
+
+                                <h2 class="mt-4"><span id="grouplights3">00</span> lights</h2>
+                              
+                                <span style="color: red">Offline lights : <span id="groupoffline3">00</span></span>
+                                <div class="mt-4">
+                                    <h4 ><span id="groupcost3">00</span> INR</h4>
+                                    <h6>Cost Incurred <span class="pull-right" id="groupcost%no3">0%</span></h6>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar gradient-1" style="width: 80%;" role="progressbar" id="groupcost%3">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 ><span id="groupenergy3">00</span> KWh</h4>
+                                    <h6 class="m-t-10 text-muted">Energy consumption <span class="pull-right" id="groupenergy%no3">0%</span></h6>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar gradient-3" style="width: 50%;" role="progressbar" id="groupenergy%3">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <h4 id="groupruntime3">0h 0m 00s</h4>
+                                    <h6 class="m-t-10 text-muted">Runtime <span class="pull-right" id="groupruntime%no3">0%</span></h6>
+                                    <div class="progress mb-3" style="height: 7px">
+                                        <div class="progress-bar gradient-4" style="width: 35%;" role="progressbar" id="groupruntime%3">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer border-0 bg-transparent">
+                                <div class="row">
+                                    <div class="col-4 border-right-1 pt-3" style="padding: 0px">
+                                        <a class="text-center d-block text-muted" onclick="groupbrightness('3')">
+                                            <i class="fa fa-adjust gradient-1-text" aria-hidden="true"></i>
+                                            <p class="">Brightness</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 border-right-1 pt-3" style="padding: 0px"><a class="text-center d-block text-muted" onclick="groupschedule('3')">
+                                        <i class="fa fa-clock-o gradient-3-text"></i>
+                                            <p class="">Schedule</p>
+                                        </a>
+                                    </div>
+                                    <div class="col-4 pt-3" style="padding: 0px"><a class="text-center d-block text-muted" onclick="grouptroubleshoot('3')">
+                                        <i class="fa fa-wrench gradient-4-text"></i>
+                                            <p class="">Troubleshoot</p>
+                                        </a>
+                                    </div>
+                                </div>
+                                    
+                                    
+                            </div>
+                            </div>
+                        </div>
+                        
+                        
+                    </div>
+                        
+                        
+                        
+            
+                        
+                        
+                    
+      
+                    
+                    
+                    </div>
+                </div>
+                
+                
+                                    <div class="modal fade" id="modalbrightness">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Brightness settings</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Adaptive brightness<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="The light adjusts to the actual brightness of the environment. Darker it gets brighter the light glows. This is done with the help of dedicated light sensitive sensor along with our AI enabled processors" style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox">
+                                                     <span class="slider round"></span>
+                                                    </label></p>
+                                                    
+                                                    <p>Sunset & Sunrise<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="Our backend system predicts the exact sunset timing and sunrise timing for a given location using celestial navigation techniques and with this feature turned on, the light automatically glows when the sun sets and switches off when the sun rises" style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox">
+                                                     <span class="slider round"></span>
+                                                    </label></p>
+                                                    
+                                                    
+                                                    
+                                                    <hr>
+                                                    <h5>Set brightness</h5>
+                                                 
+                                                    <center>
+                                                        <br>
+                                                        
+                                                           <input type="range" min="1" max="100" value="100" style="width: 90%">
+                                                    <br>
+                                                    <br>
+                                                    
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-info" style="width: 25%">Set</button>
+                                                    </center>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                                 <div class="modal fade" id="modalschedule">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Brightness settings</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    
+                                                    <p>Switch on:
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                    
+                                                    
+                                                    </p>
+                                                    
+                                                     <div style="font-size: 12px;margin-top: -2%;width: 50%">
+                                                          <input type="time" style="font-size: 15px;color: #808080;">                                           
+                                                        
+                                                    
+                                                    
+                                                    </div>
+                                                    
+                                                    <p>Switch off:
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                    
+                                                    
+                                                    </p>
+                                                    
+                                                    <div style="font-size: 12px;margin-top: -2%;width: 50%">
+                                                          <input type="time" style="font-size: 15px;color: #808080;">                                           
+                                                        
+                                                    
+                                                    
+                                                    </div>
+                                                
+                                                    
+                                                    <p>Brightness schedule<a role="button" data-container="body" data-toggle="popover" class="btn btn-secondary popover-test" title="How does it work?" data-content="Set timmings at which the light has to glow 100% 50% and 0% and light automatically turns on to given brightness by the set time." style="background: none;border: none;"><img src="images/information.png" height="15px" width="15px" style="vertical-align: top;"></a>
+                                                    <label class="switch" style="float: right">
+                                                     <input type="checkbox">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                    
+                                                    
+                                                    </p>
+                                                    
+                                                     <div style="font-size: 12px;margin-top: -5%;width: 50%">
+                                                         
+                                                         <div><img src="images/brightness1.png" height="15px" width="15px" style="float: left"> 100% brightness: <input type="time" style="font-size: 12px;color: #808080;border: none"></div>
+                                                         <div><img src="images/brightness3.png" height="15px" width="15px" style="float: left">50% brightness  : <input type="time" style="font-size: 12px;color: #808080;border: none"></div>
+                                                         <div><img src="images/brightness2.png" height="15px" width="15px" style="float: left">0% brightness    : <input type="time" style="font-size: 12px;color: #808080;border: none"></div>
+                                                         
+                                                        
+                                                    
+                                                    
+                                                    </div>
+                                                    
+                                               
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                
+                
+                                                    <div class="modal fade" id="modaltroubleshoot">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Troubleshooting</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                
+                                                    
+                                                    <h4>Total lights <span style="float: right">30</span>                                 
+                                                    
+                                                    </h4>
+                                                    
+                                                     <div style="font-size: 12px;margin-top: -2%;width: 50%">
+                                                         
+                                                         <div><img src="images/online.png" height="12px" width="12px" style="float: left"> Online: 30 </div>
+                                                         <div><img src="images/offline.png" height="12px" width="12px" style="float: left">Offline: 00</div>
+                                                        
+                                                         
+                                                        
+                                                    
+                                                    
+                                                    </div>
+                                                    <br>
+                                                    <h4>Total Hubs <span style="float: right">3</span>                                 
+                                                    
+                                                    </h4>
+                                                    
+                                                     <div style="font-size: 12px;margin-top: -2%;width: 50%">
+                                                         
+                                                         <div><img src="images/online.png" height="12px" width="12px" style="float: left"> Online: 3 </div>
+                                                         <div><img src="images/offline.png" height="12px" width="12px" style="float: left">Offline: 00</div>
+                                                        
+                                                         
+                                                        
+                                                    
+                                                    
+                                                    </div>
+                                                    
+                                                    
+                                                    
+                                                    
+                                                 
+                                                    <center>
+                                                      <div id="map_canvas_modal" class="col-md-12 col-sm-12 col-xs-12" style="height:300px;"></div>  
+                                                    <br>
+                                                    <br>
+                                                    
+                                                    <button type="button" class="btn btn-primary" style="width: 25%">Troubleshoot</button>
+                                                    </center>
+                                                </div>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+
+                <div class="row">
+                    <div style="width: 100%;font-size: 20px;margin-bottom: 2%;margin-left: 2%">Lights
+                    
+                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" style="float: right;margin-right: 5%">Know more</button>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="active-member">
+                                    <div class="table-responsive">
+                                        <table class="table table-xs mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Date since</th>
+                                                    <th>Light ID</th>
+                                                    <th>Group </th>
+                                                    <th>Status</th>
+                                                    <th>Cost incurred</th>
+                                                    <th>Energy consumption</th>
+                                                    <th>Run time</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                    
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                 <td id="date1">****</td>
+                                                 <td id="lightid1">****</td>
+                                                 <td id="group1">****</td>
+                                                 <td id="status1" style="color: green">****</td>    
+                                                 <td id="cost1">****</td>  
+                                                 <td id="energy1">****</td>
+                                                 <td id="runtime1">****</td>
+                                                 <td>
+                                                     <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="tableslider1" onclick="slider('1')">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                                                    
+                                                </td>
+                                                        
+                                                 <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" >Know more</button>
+                                                    
+                                                 </td>
+                                               
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                 <td id="date2">****</td>
+                                                 <td id="lightid2">****</td>
+                                                 <td id="group2">****</td>
+                                                 <td id="status2" style="color: green">****</td>    
+                                                 <td id="cost2">****</td>  
+                                                 <td id="energy2">****</td>
+                                                 <td id="runtime2">****</td>
+                                                 <td>
+                                                     <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="tableslider2" onclick="slider('2')">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                                                    
+                                                </td>
+                                                        
+                                                 <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" >Know more</button>
+                                                    
+                                                 </td>
+                                               
+                                                </tr>
+                                                
+                                                
+                                                <tr>
+                                                 <td id="date3">****</td>
+                                                 <td id="lightid3">****</td>
+                                                 <td id="group3">****</td>
+                                                 <td id="status3" style="color: green">****</td>    
+                                                 <td id="cost3">****</td>  
+                                                 <td id="energy3">****</td>
+                                                 <td id="runtime3">****</td>
+                                                 <td>
+                                                     <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="tableslider3" onclick="slider('3')">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                                                    
+                                                </td>
+                                                        
+                                                 <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" >Know more</button>
+                                                    
+                                                 </td>
+                                               
+                                                </tr>
+                                                
+                                                
+                                                
+                                                <tr>
+                                                 <td id="date4">****</td>
+                                                 <td id="lightid4">****</td>
+                                                 <td id="group4">****</td>
+                                                 <td id="status4" style="color: green">****</td>    
+                                                 <td id="cost4">****</td>  
+                                                 <td id="energy4">****</td>
+                                                 <td id="runtime4">****</td>
+                                                 <td>
+                                                     <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="tableslider4" onclick="slider('4')">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                                                    
+                                                </td>
+                                                        
+                                                 <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" >Know more</button>
+                                                    
+                                                 </td>
+                                               
+                                                </tr>
+                                                
+                                                
+                                                
+                                                <tr>
+                                                 <td id="date5">****</td>
+                                                 <td id="lightid5">****</td>
+                                                 <td id="group5">****</td>
+                                                 <td id="status5" style="color: green">****</td>    
+                                                 <td id="cost5">****</td>  
+                                                 <td id="energy5">****</td>
+                                                 <td id="runtime5">****</td>
+                                                 <td>
+                                                     <label class="switch" style="float: clear">
+                                                     <input type="checkbox" id="tableslider5" onclick="slider('5')">
+                                                     <span class="slider round"></span>
+                                                    </label>
+                                                    
+                                                </td>
+                                                        
+                                                 <td>
+                                                    <button type="button" class="btn mb-1 btn-rounded btn-outline-primary" >Know more</button>
+                                                    
+                                                 </td>
+                                               
+                                                </tr>
+                                                
+                                                
+                                                
+                                               
+                                                
+                                                
+                                                
+                                                
+                              
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+
+
+
+                
+
+
+            </div>
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright &copy; Designed & Developed by <a href="https://meshling.com">Meshling technologies</a> 2021</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="plugins/common/common.min.js"></script>
+    <script src="js/custom.min.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/gleek.js"></script>
+    <script src="js/styleSwitcher.js"></script>
+
+    <!-- Chartjs -->
+    <script src="./plugins/chart.js/Chart.bundle.min.js"></script>
+    <!-- Circle progress -->
+    <script src="./plugins/circle-progress/circle-progress.min.js"></script>
+    <!-- Datamap -->
+    <script src="./plugins/d3v3/index.js"></script>
+    <script src="./plugins/topojson/topojson.min.js"></script>
+    <script src="./plugins/datamaps/datamaps.world.min.js"></script>
+    <!-- Morrisjs -->
+    <script src="./plugins/raphael/raphael.min.js"></script>
+    <script src="./plugins/morris/morris.min.js"></script>
+    <!-- Pignose Calender -->
+    <script src="./plugins/moment/moment.min.js"></script>
+    <script src="./plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+    <!-- ChartistJS -->
+    <script src="./plugins/chartist/js/chartist.min.js"></script>
+    <script src="./plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
+
+
+
+    <script src="./js/dashboard/dashboard-1.js"></script>
+    <script>
+    
+    function initialize()
+  {
+
+ // alert("test");
+      //document.getElementById("username").innerHTML = localStorage.getItem("username");
+     
+     var myLatlng = new google.maps.LatLng(13.066573,80.266197);
+    mapOptions = 
+    {
+      center: myLatlng,
+            zoom: 12,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+    //zoomControl: false,
+  mapTypeControl:  false,
+  scaleControl:  false,
+  streetViewControl:  false,
+  rotateControl:  false,
+  fullscreenControl:  true,
+       
+
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"),
+      mapOptions);
+
+           //var infowindow = new google.maps.InfoWindow({
+         // content: contentString
+        //});
+    marker = new google.maps.Marker(
+    {
+        
+     //position: myLatlng,
+     info:'8768',
+      map: map,
+          title:"Hello World!"
+    })
+      
+      
+      
+      var myLatlng = new google.maps.LatLng(13.066573,80.266197);
+    mapOptions = 
+    {
+      center: myLatlng,
+            zoom: 12,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+    //zoomControl: false,
+  mapTypeControl:  false,
+  scaleControl:  false,
+  streetViewControl:  false,
+  rotateControl:  false,
+  fullscreenControl:  true,
+       
+
+    };
+    map_modal = new google.maps.Map(document.getElementById("map_canvas_modal"),
+      mapOptions);
+
+           //var infowindow = new google.maps.InfoWindow({
+         // content: contentString
+        //});
+    marker = new google.maps.Marker(
+    {
+        
+     //position: myLatlng,
+     info:'8768',
+      map: map_modal,
+          title:"Hello World!"
+    })
+       //alert("atrste");
+      
+         setTimeout(firsttime,4000); 
+      
+     
+      }
+    
+    </script>
+    
+    
+    <script>
+        //localStorage.setItem("email","test@gmail.com")
+         var marker, i;
+         var marker = null;
+  var myLatlng = null;
+  var map = null;
+  var image = null;
+  var mapOptions = null
+   var gmarkers = [];
+          var gmarkers1 = [];
+          var testmarkers = [];
+          var testmarkerserase =[];
+          var markericon = 'images/pin_red.png';
+         var f=0; 
+         var m = 0;
+        var k = 0;
+        
+          var lighton = 0;
+            var lightoff = 0;
+        var offline_lights = 0;
+        
+         var monthdata0 = [];
+         var monthdata1 = [];
+         var monthdata2 = [];
+         var monthdata3 = [];
+        var arraydata1 = [];
+        var arraydata2 = [];
+        var arraydata3 = [];
+        var arraydata4 = [];
+        var arraydata5 = [];
+        var arraydata6 = [];
+        var arraydata7 = [];
+        var arraydata8 = [];
+        var arraydata9 = [];
+        var arraydata10 = [];
+        
+        var arraydata11 = []; /////lights status
+        
+        var arraydata12 = []; /// offline status
+        
+        
+        var arraydata13 = []; /// offline group status
+       // localStorage.setItem("email","test@gmail.com")
+        
+        function firsttime()
+        {
+            //
+           
+                  var d = new Date();
+                 var year = d.getFullYear();
+                var month = d.getMonth();
+        
+                for(q = 0; q <= month; q += 1)
+                    
+                    {  
+                        var addmonth = q+1;
+                        var tempmonth;
+                        if(addmonth < 10)
+                            {
+                               tempmonth = String("0")+String(addmonth) 
+                            }
+                        
+                        else{
+                            tempmonth = addmonth
+                        }
+                        monthdata1.push(tempmonth);
+                        monthdata0.push(tempmonth);
+                        monthdata2.push(0);
+                        monthdata3.push(0);
+                    }
+                
+                for(y = 0; y < monthdata1.length; y+= 1)
+                    {
+                        if(String(monthdata1[y]) == "01")
+                            {
+                                monthdata0[y] = "Jan"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "02")
+                            {
+                                monthdata0[y] = "Feb"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "03")
+                            {
+                                monthdata0[y] = "Mar"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "04")
+                            {
+                                monthdata0[y] = "Apr"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "05")
+                            {
+                                monthdata0[y] = "May"
+                            }
+                        
+                        else if(String(monthdata1[y]) == "06")
+                            {
+                                monthdata0[y] = "Jun"
+                            }
+                        else if(String(monthdata1[y]) == "07")
+                            {
+                                monthdata0[y] = "Jul"
+                            }
+                        else if(String(monthdata1[y]) == "08")
+                            {
+                                monthdata0[y] = "Aug"
+                            }
+                        else if(String(monthdata1[y]) == "09")
+                            {
+                                monthdata0[y] = "Sep"
+                            }
+                        else if(String(monthdata1[y]) == "10")
+                            {
+                                monthdata0[y] = "Oct"
+                            }
+                        else if(String(monthdata1[y]) == "11")
+                            {
+                                monthdata0[y] = "Nov"
+                            }
+                        else if(String(monthdata1[y]) == "12")
+                            {
+                                monthdata0[y] = "Dec"
+                            }
+                        
+                        
+                    }
+            
+           // alert(monthdata1);
+            
+             // alert("started");
+        
+        document.getElementById("date1").innerHTML = "****";
+        document.getElementById("lightid1").innerHTML = "****";
+        document.getElementById("group1").innerHTML =  "****";
+        document.getElementById("status1").innerHTML =  "****";
+        document.getElementById("cost1").innerHTML =  "****";
+         document.getElementById("energy1").innerHTML =  "****";
+         document.getElementById("runtime1").innerHTML =  "****";
+            
+               
+            
+            
+            document.getElementById("date2").innerHTML = "****";
+        document.getElementById("lightid2").innerHTML = "****";
+        document.getElementById("group2").innerHTML =  "****";
+        document.getElementById("status2").innerHTML =  "****";
+        document.getElementById("cost2").innerHTML =  "****";
+         document.getElementById("energy2").innerHTML =  "****";
+         document.getElementById("runtime2").innerHTML =  "****";
+            
+            
+            document.getElementById("date3").innerHTML = "****";
+        document.getElementById("lightid3").innerHTML = "****";
+        document.getElementById("group3").innerHTML =  "****";
+        document.getElementById("status3").innerHTML =  "****";
+        document.getElementById("cost3").innerHTML =  "****";
+         document.getElementById("energy3").innerHTML =  "****";
+         document.getElementById("runtime3").innerHTML =  "****";
+            
+            
+            document.getElementById("date4").innerHTML = "****";
+        document.getElementById("lightid4").innerHTML = "****";
+        document.getElementById("group4").innerHTML =  "****";
+        document.getElementById("status4").innerHTML =  "****";
+        document.getElementById("cost4").innerHTML =  "****";
+         document.getElementById("energy4").innerHTML =  "****";
+         document.getElementById("runtime4").innerHTML =  "****";
+            
+            document.getElementById("date5").innerHTML = "****";
+        document.getElementById("lightid5").innerHTML = "****";
+        document.getElementById("group5").innerHTML =  "****";
+        document.getElementById("status5").innerHTML =  "****";
+        document.getElementById("cost5").innerHTML =  "****";
+         document.getElementById("energy5").innerHTML =  "****";
+         document.getElementById("runtime5").innerHTML =  "****";
+
+         
+            var testmarkers=null;
+              var data=null;
+              var pos=null;
+               var testmarkers = [];
+  
+                         
+                for(i=0; i<testmarkerserase.length; i++){
+        testmarkerserase[i].setMap(null);
+    }
+            
+            //localStorage.setItem("email","test@gmail.com");
+              //  alert(localStorage.getItem("email"));
+              var infowindow = new google.maps.InfoWindow();
+                     xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/meshling_streetlight/api/fetch_devices.php?email="+localStorage.getItem("email"),false);
+    xmlhttp.send();
+
+    var data = xmlhttp.responseText;
+           
+     var table = JSON.parse(data);
+          // alert(data)
+    document.getElementById("totlights").innerHTML = table.length;
+            document.getElementById("since").innerHTML = "since "+ table[0].dates;
+                
+
+    var totruntime = 0;
+    var totenergy = 0;
+        
+                
+                for (i = 0; i < table.length; i +=1) 
+                {    
+                    
+                  
+                    
+                    
+                     marker = new google.maps.Marker({
+        position: new google.maps.LatLng(table[i].lat, table[i].longi),
+        map: map,
+           icon: markericon
+          // icon: 'img/bikemarker.png'
+      });
+               
+
+           google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(testmarkers[i]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+              testmarkerserase.push(marker);
+                    
+                    //var tempad_id = String(table[i].ad_id);
+                    //alert(arraydata1.indexOf(table[i].ad_id));
+                    
+                    arraydata1.push(table[i].dates);
+                    arraydata2.push(table[i].id);
+                    arraydata3.push(table[i].location);
+                    arraydata4.push(table[i].groups);
+                    
+                    //alert(table[i].id);
+                    
+                    if(table[i].groups != 0 )
+                        {
+                            
+                            document.getElementById("group-div-none").style.display = "none";
+                            document.getElementById("group-div").style.display = "inherit";
+                            
+                        }
+                    
+                    
+                    //alert(arraydata4);
+                    
+               var runtime = 0;
+                var energy = 0;    
+                
+                    
+                    xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/meshling_streetlight/api/fetch_devices_ind.php?id="+table[i].id,false);
+    xmlhttp.send();
+
+    var data1 = xmlhttp.responseText;
+                    
+                  //  alert(data1);
+           
+     var table1 = JSON.parse(data1);
+                    
+                    for (var h = 0; h < table1.length; h +=1)   
+                           
+                { 
+                    
+                   // alert(table2[h].runtime);
+                     runtime = parseFloat(runtime)+parseFloat(table1[h].runtime);
+                     energy = parseFloat(energy)+parseFloat(table1[h].energy);
+                    
+                    var dates = table1[h].dates;
+                    var splits = dates.split("-");
+                    //alert(splits[1])
+                    
+                   // alert(monthdata1.indexOf(splits[1]));
+                   //alert(splits[1]);
+                    
+                    
+                    
+                    monthdata2[monthdata1.indexOf(splits[1])] = parseFloat(parseFloat(monthdata2[monthdata1.indexOf(splits[1])]) + parseFloat(table1[h].energy)).toFixed(2);
+                    monthdata3[monthdata1.indexOf(splits[1])] = parseFloat(parseFloat(monthdata2[monthdata1.indexOf(splits[1])]) + parseFloat((parseFloat(table1[h].energy)).toFixed(2))*6.09).toFixed(2);
+                    
+                        
+                    
+                            
+                        
+                    
+                    
+                    
+                }
+                    
+                    
+                    
+                    arraydata11.push(table1[0].status);
+                    arraydata12.push(1);
+                    if(table1[0].status == "1")
+                        {
+                            lighton = lighton + 1;
+                        }
+                    else{
+                        
+                        lightoff = lightoff + 1;
+                        
+                    }
+                    
+                    
+                     if(arraydata5[arraydata2.indexOf(table1[0].id)] == undefined)
+                    {
+                       // alert("u")
+                    arraydata5.push(runtime);
+                    arraydata6.push(energy);
+                    
+                    }
+                    
+                    else{
+                        //alert("test");
+                        //alert(arraydata6[arraydata1.indexOf(table2[0].ad_id)])
+                        //alert()
+                        
+                        arraydata5[arraydata2.indexOf(table1[0].id)] = parseFloat(arraydata5[arraydata2.indexOf(table2[0].id)]) + parseFloat(runtime);
+                        arraydata6[arraydata2.indexOf(table1[0].id)] = parseFloat(arraydata6[arraydata2.indexOf(table2[0].id)]) + parseFloat(energy);
+                        
+                    }
+                    
+                    //alert(arraydata1);
+                    //alert(arraydata2);
+                    //alert(arraydata5);
+                    //alert(arraydata6);
+                    
+                    
+                    totenergy = parseFloat(totenergy)+parseFloat(energy);
+                    totruntime = parseFloat(totruntime)+parseFloat(runtime);
+                    
+                    
+                   // alert("working")
+                    
+                    
+                    if(table[i].groups != 0)
+                        {
+                    if(arraydata7.indexOf(table[i].groups) == -1)
+                        {
+                    //alert(arraydata7.indexOf(table[0].group));
+                             arraydata7.push(table[i].groups);
+                            arraydata8.push(table[i].id);
+                            arraydata9.push(runtime);
+                             arraydata10.push(energy);
+                            arraydata13.push(0);
+                        }
+                    else
+                        
+                        {
+                            
+                           arraydata8[arraydata7.indexOf(table[i].groups)] = arraydata8[arraydata7.indexOf(table[i].groups)] + "," + table[i].id;
+                            arraydata9[arraydata7.indexOf(table[i].groups)] = parseInt(arraydata9[arraydata7.indexOf(table[i].groups)])+parseInt(runtime);
+                             arraydata10[arraydata7.indexOf(table[i].groups)] = parseFloat(arraydata10[arraydata7.indexOf(table[i].groups)])+parseInt(energy);
+                        }
+                            
+                        }
+                    
+                   // alert(arraydata8);
+                    //alert(arraydata8.indexOf(table[i].id))
+                   // alert(table[i].id);
+                    
+                  //alert(arraydata9);
+                   //alert(arraydata10);
+                   
+            
+            
+            
+        }
+            
+          //  alert(arraydata4);
+            
+             
+ xmlhttp=new XMLHttpRequest();
+    xmlhttp.open("GET","http://localhost/meshling_streetlight/api/fetch_offline_lights.php",false);
+    xmlhttp.send();
+
+    var data2 = xmlhttp.responseText;
+           
+     var table2 = JSON.parse(data2);
+          // alert(data)
+
+        
+                
+                for (w = 0; w < table2.length; w +=1) 
+                {    
+                    
+                    
+                    if(arraydata2.indexOf(table2[w].id) != -1)
+                        {
+                            arraydata12[arraydata2.indexOf(table2[w].id)] = 0; 
+                            offline_lights = offline_lights + 1;
+                            arraydata13[arraydata7.indexOf(arraydata4[arraydata2.indexOf(table2[w].id)])] = arraydata13[arraydata7.indexOf(arraydata4[arraydata2.indexOf(table2[w].id)])] + 1;
+                            
+                        }
+                    
+                   
+                    
+                    
+                }
+            
+           // alert(arraydata13);
+            document.getElementById("totenergy").innerHTML = totenergy;
+                    document.getElementById("totcost").innerHTML = parseFloat(totenergy*6.09);
+                    
+                    var temptotruntime = secondsToHms(totruntime);
+                    document.getElementById("totruntime").innerHTML = temptotruntime;
+            
+            document.getElementById("offline_lights").innerHTML = offline_lights;
+            
+            
+            
+            if(arraydata7[k] != undefined)
+                {
+                     
+                    
+                    
+                  
+                    document.getElementById("group-div1").style.display = "block";
+                    document.getElementById("groupname1").innerHTML =  arraydata7[k];
+                    document.getElementById("grouplights1").innerHTML = arraydata8[k].split(",").length;
+                     document.getElementById("groupenergy1").innerHTML =  arraydata10[k];
+                    var tempgroupruntime1 = secondsToHms(arraydata9[k]);
+                     document.getElementById("groupruntime1").innerHTML = tempgroupruntime1;
+                     document.getElementById("groupcost1").innerHTML =  parseInt(arraydata10[k]*6.09);
+                    
+                    //alert(parseInt(parseInt(document.getElementById("groupenergy1").innerHTML)/parseInt(document.getElementById("totenergy").innerHTML)*100)+"%");
+                    
+                    document.getElementById("groupcost%no1").innerHTML = parseInt(parseInt(document.getElementById("groupcost1").innerHTML)/parseInt(document.getElementById("totcost").innerHTML)*100)+"%";
+                    document.getElementById("groupcost%1").style.width = document.getElementById("groupcost%no1").innerHTML;
+                    
+                    document.getElementById("groupenergy%no1").innerHTML = parseInt(parseInt(document.getElementById("groupenergy1").innerHTML)/parseInt(document.getElementById("totenergy").innerHTML)*100)+"%";
+                    
+                    document.getElementById("groupenergy%1").style.width = document.getElementById("groupenergy%no1").innerHTML;
+                    document.getElementById("groupruntime%no1").innerHTML = parseInt(parseInt(arraydata9[k])/parseInt(totruntime)*100)+"%";
+                    
+                    document.getElementById("groupoffline1").innerHTML = arraydata13[k];
+                    
+                }
+            
+            
+             if(arraydata7[k+1] != undefined)
+                {
+                    
+                  
+                    document.getElementById("group-div2").style.display = "block";
+                    document.getElementById("groupname2").innerHTML =  arraydata7[k+1];
+                    document.getElementById("grouplights2").innerHTML = arraydata8[k+1].split(",").length;
+                     document.getElementById("groupenergy2").innerHTML =  arraydata10[k+1];
+                    var tempgroupruntime2 = secondsToHms(arraydata9[k+1]);
+                     document.getElementById("groupruntime2").innerHTML = tempgroupruntime2;
+                     document.getElementById("groupcost2").innerHTML =  parseInt(arraydata10[k+1]*6.09);
+                    
+                    document.getElementById("groupcost%no2").innerHTML = parseInt(parseInt(document.getElementById("groupcost2").innerHTML)/parseInt(document.getElementById("totcost").innerHTML)*100)+"%";
+                    document.getElementById("groupcost%2").style.width = document.getElementById("groupcost%no2").innerHTML;
+                    
+                    document.getElementById("groupenergy%no2").innerHTML = parseInt(parseInt(document.getElementById("groupenergy2").innerHTML)/parseInt(document.getElementById("totenergy").innerHTML)*100)+"%";
+                    
+                    document.getElementById("groupenergy%2").style.width = document.getElementById("groupenergy%no2").innerHTML;
+                    document.getElementById("groupruntime%no2").innerHTML = parseInt(parseInt(arraydata9[k+1])/parseInt(totruntime)*100)+"%";
+                    
+                    document.getElementById("groupoffline2").innerHTML = arraydata13[k+1];
+                    
+
+                    
+                }
+            
+             // alert("test");
+            if(arraydata7[k+2] != undefined)
+                {
+                    
+                  
+                    document.getElementById("group-div3").style.display = "block";
+                    document.getElementById("groupname3").innerHTML =  arraydata7[k+2];
+                    document.getElementById("grouplights3").innerHTML = arraydata8[k+2].split(",").length;
+                     document.getElementById("groupenergy3").innerHTML =  arraydata10[k+2];
+                  //  alert("test");
+                    var tempgroupruntime3 = secondsToHms(arraydata9[k+2]);
+                     document.getElementById("groupruntime3").innerHTML = tempgroupruntime3;
+                   // alert("test");
+                     document.getElementById("groupcost3").innerHTML =  parseInt(arraydata10[k+2]*6.09);
+                    
+                    document.getElementById("groupcost%no3").innerHTML = parseInt(parseInt(document.getElementById("groupcost3").innerHTML)/parseInt(document.getElementById("totcost").innerHTML)*100)+"%";
+                    document.getElementById("groupcost%3").style.width = document.getElementById("groupcost%no3").innerHTML;
+                    
+                    document.getElementById("groupenergy%no3").innerHTML = parseInt(parseInt(document.getElementById("groupenergy3").innerHTML)/parseInt(document.getElementById("totenergy").innerHTML)*100)+"%";
+                    
+                    document.getElementById("groupenergy%3").style.width = document.getElementById("groupenergy%no3").innerHTML;
+                    document.getElementById("groupruntime%no3").innerHTML = parseInt(parseInt(arraydata9[k+2])/parseInt(totruntime)*100)+"%";
+                    
+                    document.getElementById("groupoffline3").innerHTML = arraydata13[k+2];
+                    
+
+                    
+                }
+            
+            
+          
+             document.getElementById("livelights").innerHTML = document.getElementById("totlights").innerHTML;
+            
+            document.getElementById("liveon").innerHTML = lighton;
+            document.getElementById("liveoff").innerHTML = lightoff;
+            document.getElementById("liveoffline").innerHTML = document.getElementById("offline_lights").innerHTML;
+            
+            document.getElementById("liveon%").innerHTML = parseInt(parseInt(document.getElementById("liveon").innerHTML)/parseInt(document.getElementById("livelights").innerHTML)*100)+"%";
+            
+            document.getElementById("liveoff%").innerHTML = parseInt(parseInt(document.getElementById("liveoff").innerHTML)/parseInt(document.getElementById("livelights").innerHTML)*100)+"%";
+            
+            document.getElementById("liveoffline%").innerHTML = parseInt(parseInt(document.getElementById("liveoffline").innerHTML)/parseInt(document.getElementById("livelights").innerHTML)*100)+"%";
+            
+            
+            document.getElementById("liveonbar%").style.width = document.getElementById("liveon").innerHTML;
+            document.getElementById("liveoffbar%").style.width = document.getElementById("liveoff").innerHTML;
+            document.getElementById("liveofflinebar%").style.width = document.getElementById("liveoffline").innerHTML;
+            
+            
+            document.getElementById("totgroups").innerHTML = arraydata7.length
+            
+                        
+
+            
+            
+    
+            
+            if(f < table.length)
+         {
+             
+               
+                  
+             document.getElementById("date1").innerHTML = arraydata1[f];
+             document.getElementById("lightid1").innerHTML = arraydata2[f] + " (" + arraydata3[f]+ ") ";
+             
+             if(arraydata4[f] == 0)
+                 {
+                    document.getElementById("group1").innerHTML = "Not grouped" 
+                 }
+             else{
+            document.getElementById("group1").innerHTML = arraydata4[f];
+                  }
+       // document.getElementById("dates1").innerHTML = arraydata4[f]; 
+      //document.getElementById("runtime1").innerHTML =  arraydata5[f];
+             document.getElementById("energy1").innerHTML =  arraydata6[f] + " KWh";
+            document.getElementById("cost1").innerHTML = parseFloat(arraydata6[f])*6.09 + "INR"
+             document.getElementById("status1").innerHTML = "online";
+             var tempruntime1 = secondsToHms(arraydata5[f]);
+             
+             document.getElementById("runtime1").innerHTML = tempruntime1;
+             if(arraydata11[f] == 1)
+                 {
+                     document.getElementById("tableslider1").checked = true;
+                 }
+           
+         }
+            
+            if(f+1 < table.length)
+         {
+             
+               
+                  
+             document.getElementById("date2").innerHTML = arraydata1[f+1];
+             document.getElementById("lightid2").innerHTML = arraydata2[f+1] + " (" + arraydata3[f+1]+ ") ";
+             
+             if(arraydata4[f+1] == 0)
+                 {
+                    document.getElementById("group2").innerHTML = "Not grouped" 
+                 }
+             else{
+            document.getElementById("group2").innerHTML = arraydata4[f+1];
+                  }
+       // document.getElementById("dates1").innerHTML = arraydata4[f]; 
+      //document.getElementById("runtime1").innerHTML =  arraydata5[f];
+             document.getElementById("energy2").innerHTML =  arraydata6[f+1] + " KWh";
+            document.getElementById("cost2").innerHTML = parseFloat(arraydata6[f+1])*6.09 + "INR"
+             document.getElementById("status2").innerHTML = "online";
+             var tempruntime2 = secondsToHms(arraydata5[f+1]);
+             
+             document.getElementById("runtime2").innerHTML = tempruntime2;
+             if(arraydata11[f+1] == 1)
+                 {
+                     document.getElementById("tableslider2").checked = true;
+                 }
+           
+         }
+            
+            
+            if(f+2 < table.length)
+         {
+             
+               
+                  
+             document.getElementById("date3").innerHTML = arraydata1[f+2];
+             document.getElementById("lightid3").innerHTML = arraydata2[f+2] + " (" + arraydata3[f+2]+ ") ";
+             
+             if(arraydata4[f+1] == 0)
+                 {
+                    document.getElementById("group3").innerHTML = "Not grouped" 
+                 }
+             else{
+            document.getElementById("group3").innerHTML = arraydata4[f+2];
+                  }
+       // document.getElementById("dates1").innerHTML = arraydata4[f]; 
+      //document.getElementById("runtime1").innerHTML =  arraydata5[f];
+             document.getElementById("energy3").innerHTML =  arraydata6[f+2] + " KWh";
+            document.getElementById("cost3").innerHTML = parseFloat(arraydata6[f+2])*6.09 + "INR"
+             document.getElementById("status3").innerHTML = "online";
+             var tempruntime3 = secondsToHms(arraydata5[f+2]);
+             
+             document.getElementById("runtime3").innerHTML = tempruntime3;
+             if(arraydata11[f+2] == 1)
+                 {
+                     document.getElementById("tableslider3").checked = true;
+                 }
+           
+         }
+            
+            if(f+3 < table.length)
+         {
+             
+               
+                  
+             document.getElementById("date4").innerHTML = arraydata1[f+3];
+             document.getElementById("lightid4").innerHTML = arraydata2[f+3] + " (" + arraydata3[f+3]+ ") ";
+             
+             if(arraydata4[f+3] == 0)
+                 {
+                    document.getElementById("group4").innerHTML = "Not grouped" 
+                 }
+             else{
+            document.getElementById("group4").innerHTML = arraydata4[f+3];
+                  }
+       // document.getElementById("dates1").innerHTML = arraydata4[f]; 
+      //document.getElementById("runtime1").innerHTML =  arraydata5[f];
+             document.getElementById("energy4").innerHTML =  arraydata6[f+3] + " KWh";
+            document.getElementById("cost4").innerHTML = parseFloat(arraydata6[f+3])*6.09 + "INR"
+             document.getElementById("status4").innerHTML = "online";
+             var tempruntime4 = secondsToHms(arraydata5[f+3]);
+             
+             document.getElementById("runtime4").innerHTML = tempruntime4;
+             
+             if(arraydata11[f+3] == 1)
+                 {
+                     document.getElementById("tableslider4").checked = true;
+                 }
+           
+         }
+            
+            
+            if(f+4 < table.length)
+         {
+             
+               
+                  
+             document.getElementById("date5").innerHTML = arraydata1[f+4];
+             document.getElementById("lightid5").innerHTML = arraydata2[f+4] + " (" + arraydata3[f+4]+ ") ";
+             
+             if(arraydata4[f+4] == 0)
+                 {
+                    document.getElementById("group5").innerHTML = "Not grouped" 
+                 }
+             else{
+            document.getElementById("group5").innerHTML = arraydata4[f+4];
+                  }
+       // document.getElementById("dates1").innerHTML = arraydata4[f]; 
+      //document.getElementById("runtime1").innerHTML =  arraydata5[f];
+             document.getElementById("energy5").innerHTML =  arraydata6[f+4] + " KWh";
+            document.getElementById("cost5").innerHTML = parseFloat(arraydata6[f+4])*6.09 + "INR"
+             document.getElementById("status5").innerHTML = "online";
+             var tempruntime5 = secondsToHms(arraydata5[f+4]);
+             
+             document.getElementById("runtime5").innerHTML = tempruntime5;
+             if(arraydata11[f+4] == 1)
+                 {
+                     document.getElementById("tableslider5").checked = true;
+                 }
+           
+         }
+            
+            
+            
+          //  alert (monthdata2);
+            
+            var speedCanvas = document.getElementById("speedChart");
+
+
+Chart.defaults.global.defaultFontSize = 12;
+
+var speedData = {
+  labels: monthdata0,
+  datasets: [{
+    yAxisID: 'A',
+    label: "Energy (KWh)",
+    data: monthdata2,
+      borderColor: 'rgb(127,96,250)',
+      backgroundColor: 'rgb(127,96,250,0.1)',
+  }
+            ,
+             
+             {
+    yAxisID: 'B',
+    label: "Cost (INR)",
+    data: monthdata3,
+      borderColor: 'rgb(252,92,137)',
+      backgroundColor: 'rgb(252,92,137,0.1)',
+  }
+            
+            ]
+};
+
+var chartOptions = {
+    scales: {
+            xAxes: [{
+               gridLines: {
+                  display: false
+               }
+            }],
+            yAxes: [{
+               gridLines: {
+                  display: false
+               },
+                id: 'A',
+        type: 'linear',
+        position: 'left',
+      }, {
+        id: 'B',
+        type: 'linear',
+        position: 'right',
+      
+            }]
+       },
+  legend: {
+    display: true,
+    position: 'top',
+    labels: {
+      boxWidth: 80,
+      fontColor: 'black'
+    }
+       
+      
+  }
+};
+
+var lineChart = new Chart(speedCanvas, {
+  type: 'line',
+  data: speedData,
+  options: chartOptions
+});
+            
+        document.getElementById("loading1").style.display = "none";
+             document.getElementById("loading2").style.display = "none";
+             document.getElementById("loading3").style.display = "none";
+            
+            
+           
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+function secondsToHms(d) {
+    d = Number(d);
+    var h = Math.floor(d / 3600);
+    var m = Math.floor(d % 3600 / 60);
+    var s = Math.floor(d % 3600 % 60);
+
+    var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " h, ") : "";
+    var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " m, ") : "";
+    var sDisplay = s > 0 ? s + (s == 1 ? " second" : " s") : "";
+             
+    
+    //alert(hDisplay + mDisplay + sDisplay)
+    return hDisplay + mDisplay + sDisplay; 
+       }
+       
+        
+        
+       
+    
+    
+    
+    </script>
+    
+     <script async defer
+         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbYy-NXqUjrk0_ZXFK7hwYVvH-vTe29M4&callback=initMap"></script>
+    
+    <script>
+    
+    
+    
+    </script>
+
+</body>
+
+</html>

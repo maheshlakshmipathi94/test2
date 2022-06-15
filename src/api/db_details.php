@@ -1,7 +1,7 @@
 <?php
-$host ="localhost";
-$username="root";
-$password="";
-$database="air_purifier";
+$host ="pneoterik.mysql.database.azure.com";
+$username="pneoterik_user";
+$password="aiotylabs2020!";
+$database="whizly";
 
 ?>
